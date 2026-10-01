@@ -1,1 +1,7 @@
+N = int(input("Введите N: "))
 
+numbers = list(range(1, N + 1))
+total = sum(numbers)
+
+print("Список чисел:", numbers)
+print("Сумма чисел:", total)
