@@ -1,7 +1,37 @@
-N = int(input("Введите N: "))
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список чисел</title>
+</head>
+<body>
 
-numbers = list(range(1, N + 1))
-total = sum(numbers)
+    <h2>Числа от 1 до N</h2>
 
-print("Список чисел:", numbers)
-print("Сумма чисел:", total)
+    <input type="number" id="number" placeholder="Введите N">
+    <button id="button">Показать</button>
+
+    <p id="numbers"></p>
+    <p id="sum"></p>
+
+    <script>
+        document.getElementById("button").addEventListener("click", function() {
+            let N = Number(document.getElementById("number").value);
+            let sum = 0;
+            let result = "";
+
+            for (let i = 1; i <= N; i++) {
+                result += i + " ";
+                sum += i;
+            }
+
+            document.getElementById("numbers").textContent =
+                "Числа: " + result;
+
+            document.getElementById("sum").textContent =
+                "Сумма: " + sum;
+        });
+    </script>
+
+</body>
+</html>
