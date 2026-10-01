@@ -1,16 +1,32 @@
-import random
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Угадай число</title>
+</head>
+<body>
 
-number = random.randint(1, 100)
+<h2>Угадай число от 1 до 100</h2>
 
-print("Я загадал число от 1 до 100.")
+<input id="num" type="number">
+<button onclick="check()">Угадать</button>
 
-while True:
-    guess = int(input("Угадайте число: "))
+<p id="result"></p>
 
-    if guess < number:
-        print("Больше!")
-    elif guess > number:
-        print("Меньше!")
-    else:
-        print("Поздравляю! Вы угадали!")
-        break
+<script>
+let secret = Math.floor(Math.random() * 100) + 1;
+
+function check() {
+    let num = Number(document.getElementById("num").value);
+
+    if (num < secret) {
+        document.getElementById("result").textContent = "Больше";
+    } else if (num > secret) {
+        document.getElementById("result").textContent = "Меньше";
+    } else {
+        document.getElementById("result").textContent = "Угадал!";
+    }
+}
+</script>
+
+</body>
+</html>
