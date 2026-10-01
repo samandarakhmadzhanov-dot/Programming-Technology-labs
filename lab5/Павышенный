@@ -1,51 +1,52 @@
-expenses = []
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расходы</title>
+</head>
+<body>
 
-while True:
-    print("\n--- РАСХОДЫ ---")
-    print("1. Добавить расход")
-    print("2. Показать расходы")
-    print("3. Удалить расход")
-    print("4. Показать общую сумму")
-    print("5. Выход")
+<h2>Мои расходы</h2>
 
-    choice = input("Выберите действие: ")
+<input id="name" placeholder="Название">
+<input id="sum" type="number" placeholder="Сумма">
+<button onclick="add()">Добавить</button>
 
-    if choice == "1":
-        name = input("Название расхода: ")
-        amount = float(input("Сумма: "))
+<ul id="list"></ul>
 
-        expenses.append([name, amount])
-        print("Расход добавлен!")
+<h3>Общая сумма: <span id="total">0</span></h3>
 
-    elif choice == "2":
-        if not expenses:
-            print("Список расходов пуст.")
-        else:
-            for i, expense in enumerate(expenses, 1):
-                print(f"{i}. {expense[0]} — {expense[1]} тг")
+<script>
+let total = 0;
 
-    elif choice == "3":
-        if not expenses:
-            print("Список расходов пуст.")
-        else:
-            for i, expense in enumerate(expenses, 1):
-                print(f"{i}. {expense[0]} — {expense[1]} тг")
+function add() {
+    let name = document.getElementById("name").value;
+    let sum = Number(document.getElementById("sum").value);
 
-            number = int(input("Введите номер расхода для удаления: "))
+    if (name == "" || sum <= 0) return;
 
-            if 1 <= number <= len(expenses):
-                deleted = expenses.pop(number - 1)
-                print(f"Удалён расход: {deleted[0]}")
-            else:
-                print("Неверный номер.")
+    let li = document.createElement("li");
 
-    elif choice == "4":
-        total = sum(expense[1] for expense in expenses)
-        print(f"Общая сумма: {total} тг")
+    li.textContent = name + " — " + sum + " тг ";
 
-    elif choice == "5":
-        print("Программа завершена.")
-        break
+    let button = document.createElement("button");
+    button.textContent = "Удалить";
 
-    else:
-        print("Неверный выбор.")
+    button.onclick = function() {
+        total -= sum;
+        document.getElementById("total").textContent = total;
+        li.remove();
+    };
+
+    li.appendChild(button);
+    document.getElementById("list").appendChild(li);
+
+    total += sum;
+    document.getElementById("total").textContent = total;
+
+    document.getElementById("name").value = "";
+    document.getElementById("sum").value = "";
+}
+</script>
+
+</body>
+</html>
