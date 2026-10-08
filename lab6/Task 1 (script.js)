@@ -1,0 +1,12 @@
+const nameInput = document.querySelector("#nameInput");
+const greeting = document.querySelector("#greeting");
+
+nameInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        const name = nameInput.value.trim();
+
+        if (name !== "") {
+            greeting.textContent = "Привет, " + name + "! Добро пожаловать!";
+        }
+    }
+});
