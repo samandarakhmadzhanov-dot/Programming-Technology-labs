@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Корзина</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: #eee; }
+        .cart { background: white; padding: 20px; margin: 30px auto; max-width: 500px; }
+        .item { padding: 15px; border-bottom: 1px solid #ddd; }
+        button { margin: 5px; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+
+<div class="cart">
+    <h1>🛒 Корзина</h1>
+
+    <div class="item" data-price="500">
+        Футболка — 500 ₸
+        <button class="minus">−</button>
+        <span>1</span>
+        <button class="plus">+</button>
+        <button class="del">Удалить</button>
+    </div>
+
+    <div class="item" data-price="1200">
+        Кроссовки — 1200 ₸
+        <button class="minus">−</button>
+        <span>1</span>
+        <button class="plus">+</button>
+        <button class="del">Удалить</button>
+    </div>
+
+    <h3>Товаров: <span id="count">0</span></h3>
+    <h3>Сумма: <span id="sum">0</span> ₸</h3>
+</div>
+
+<script>
+function update() {
+    let count = 0, sum = 0;
+
+    document.querySelectorAll(".item").forEach(item => {
+        let q = Number(item.querySelector("span").textContent);
+        count += q;
+        sum += q * Number(item.dataset.price);
+    });
+
+    document.querySelector("#count").textContent = count;
+    document.querySelector("#sum").textContent = sum;
+}
+
+document.querySelectorAll(".item").forEach(item => {
+    let q = item.querySelector("span");
+
+    item.querySelector(".plus").addEventListener("click", () => {
+        q.textContent++;
+        update();
+    });
+
+    item.querySelector(".minus").addEventListener("click", () => {
+        if (q.textContent > 1) q.textContent--;
+        update();
+    });
+
+    item.querySelector(".del").addEventListener("click", () => {
+        item.remove();
+        update();
+    });
+});
+
+update();
+</script>
+
+</body>
+</html>
