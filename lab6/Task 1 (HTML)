@@ -3,9 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Приветствие</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Персональное приветствие</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 90%;
+            padding: 13px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.3);
+        }
+
+        #greeting {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 25px;
+            min-height: 25px;
+        }
+    </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -20,6 +69,21 @@
         <p id="greeting"></p>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const nameInput = document.querySelector("#nameInput");
+        const greeting = document.querySelector("#greeting");
+
+        nameInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                const name = nameInput.value.trim();
+
+                if (name !== "") {
+                    greeting.textContent =
+                        "Привет, " + name + "! Добро пожаловать!";
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
