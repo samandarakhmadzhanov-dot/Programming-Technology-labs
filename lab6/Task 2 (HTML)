@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица оценок</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            background: #eee;
+            padding: 40px;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px 30px;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        .grade {
+            cursor: pointer;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        input {
+            width: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Таблица оценок</h1>
+
+    <table>
+        <tr>
+            <th>Предмет</th>
+            <th>Оценка</th>
+        </tr>
+        <tr><td>Математика</td><td class="grade">85</td></tr>
+        <tr><td>Программирование</td><td class="grade">90</td></tr>
+        <tr><td>История</td><td class="grade">75</td></tr>
+        <tr><td>Информатика</td><td class="grade">95</td></tr>
+    </table>
+
+    <h2>Средний балл: <span id="avg"></span></h2>
+
+    <script>
+        const grades = document.querySelectorAll(".grade");
+        const avg = document.querySelector("#avg");
+
+        function count() {
+            let sum = 0;
+            grades.forEach(x => sum += Number(x.textContent));
+            avg.textContent = (sum / grades.length).toFixed(1);
+        }
+
+        grades.forEach(cell => {
+            cell.addEventListener("click", () => {
+                const input = document.createElement("input");
+                input.value = cell.textContent;
+                cell.textContent = "";
+                cell.append(input);
+                input.focus();
+
+                input.addEventListener("keydown", e => {
+                    if (e.key == "Enter") {
+                        cell.textContent = input.value;
+                        count();
+                    }
+                });
+            });
+        });
+
+        count();
+    </script>
+
+</body>
+</html>
