@@ -1,0 +1,38 @@
+const tabs = document.querySelectorAll(".tab");
+const content = document.getElementById("content");
+
+const pages = {
+    training: `
+        <h2>Наши тренировки</h2>
+        <p> Силовая тренировка</p>
+        <p> Кардио</p>
+        <p> Йога и растяжка</p>
+    `,
+
+    coaches: `
+        <h2>Наши тренеры</h2>
+        <p> Алексей — силовые тренировки</p>
+        <p> Дмитрий — кардио</p>
+        <p> Анна — йога</p>
+    `,
+
+    subscriptions: `
+        <h2>Абонементы</h2>
+        <p> 1 месяц — 15 000 ₸</p>
+        <p> 3 месяца — 40 000 ₸</p>
+        <p> 12 месяцев — 120 000 ₸</p>
+    `
+};
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        const page = tab.dataset.tab;
+        content.innerHTML = pages[page];
+    });
+});
