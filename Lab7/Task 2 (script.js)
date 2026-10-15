@@ -1,1 +1,160 @@
+const tabs = document.querySelectorAll(".tab");
+const content = document.getElementById("content");
 
+const questions = [
+    {
+        question: "1. Что означает HTML?",
+        answers: [
+            "Язык разметки",
+            "Язык программирования",
+            "База данных"
+        ],
+        correct: 0
+    },
+    {
+        question: "2. Для чего нужен CSS?",
+        answers: [
+            "Для хранения данных",
+            "Для оформления страницы",
+            "Для создания базы данных"
+        ],
+        correct: 1
+    },
+    {
+        question: "3. Какой язык добавляет интерактивность сайту?",
+        answers: [
+            "HTML",
+            "CSS",
+            "JavaScript"
+        ],
+        correct: 2
+    }
+];
+
+let score = 0;
+let finished = false;
+
+function showQuestions() {
+    content.innerHTML = `
+        <h2>Ответь на вопросы</h2>
+        <form id="quizForm">
+            ${questions.map((q, i) => `
+                <div class="question">
+                    <p>${q.question}</p>
+                    ${q.answers.map((answer, j) => `
+                        <label>
+                            <input type="radio"
+                                name="q${i}" value="${j}">
+                            ${answer}
+                        </label>
+                    `).join("")}
+                </div>
+            `).join("")}
+
+            <button class="main-btn" type="submit">
+                Завершить тест
+            </button>
+        </form>
+    `;
+
+    document.getElementById("quizForm")
+        .addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            if (finished) return;
+
+            score = 0;
+
+            questions.forEach((q, i) => {
+                const answer = document.querySelector(
+                    `input[name="q${i}"]:checked`
+                );
+
+                if (answer && Number(answer.value) === q.correct) {
+                    score++;
+                }
+            });
+
+            finished = true;
+            showResults();
+        });
+}
+
+function showResults() {
+    const percent = Math.round(
+        score / questions.length * 100
+    );
+
+    content.innerHTML = `
+        <h2>Результаты теста</h2>
+        <p>Всего вопросов: ${questions.length}</p>
+        <p>Правильных ответов: ${score}</p>
+        <p>Ошибок: ${questions.length - score}</p>
+        <h3>Результат: ${percent}%</h3>
+        <p>${percent >= 70
+            ? "Отлично! Хороший результат!"
+            : "Попробуй ещё раз, у тебя получится!"}</p>
+        <button class="main-btn" id="restart">
+            Пройти заново
+        </button>
+    `;
+
+    document.getElementById("restart")
+        .addEventListener("click", () => {
+            score = 0;
+            finished = false;
+            showQuestions();
+            setActiveTab("questions");
+        });
+}
+
+function showRules() {
+    content.innerHTML = `
+        <h2>Правила теста</h2>
+        <p>1. В тесте всего 3 вопроса.</p>
+        <p>2. В каждом вопросе один правильный ответ.</p>
+        <p>3. За правильный ответ даётся 1 балл.</p>
+        <p>4. Максимальный результат — 3 балла.</p>
+        <p>5. После завершения можно посмотреть результат.</p>
+    `;
+}
+
+function setActiveTab(page) {
+    tabs.forEach(tab => {
+        tab.classList.toggle(
+            "active",
+            tab.dataset.tab === page
+        );
+    });
+}
+
+function showPage(page) {
+    if (page === "questions") {
+        showQuestions();
+    } else if (page === "results") {
+        showResultsPage();
+    } else {
+        showRules();
+    }
+}
+
+function showResultsPage() {
+    if (finished) {
+        showResults();
+    } else {
+        content.innerHTML = `
+            <h2>Результаты</h2>
+            <p>Сначала пройди тест, чтобы увидеть баллы.</p>
+        `;
+    }
+}
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        const page = tab.dataset.tab;
+        setActiveTab(page);
+        showPage(page);
+    });
+});
+
+showQuestions();
