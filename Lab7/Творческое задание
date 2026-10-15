@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Учебный сайт</title>
+</head>
+<body>
 
+    <h1>Учебный сайт</h1>
+
+    <button onclick="openTab('home')">Главная</button>
+    <button onclick="openTab('courses')">Курсы</button>
+    <button onclick="openTab('about')">О сайте</button>
+
+    <hr>
+
+    <input type="text" id="search" placeholder="Поиск по содержимому">
+    <p id="result"></p>
+
+    <div id="home" class="tab">
+        <h2>Главная</h2>
+        <p>Добро пожаловать на мой учебный сайт.</p>
+        <p>Здесь можно найти информацию об обучении и программировании.</p>
+    </div>
+
+    <div id="courses" class="tab" hidden>
+        <h2>Курсы</h2>
+        <p>HTML - создание веб-страниц.</p>
+        <p>CSS - оформление сайта.</p>
+        <p>JavaScript - добавление функций на сайт.</p>
+        <p>Python - язык программирования.</p>
+    </div>
+
+    <div id="about" class="tab" hidden>
+        <h2>О сайте</h2>
+        <p>Этот сайт создан для учебного задания.</p>
+        <p>Он написан с помощью HTML и JavaScript.</p>
+    </div>
+
+    <script>
+        function openTab(name) {
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.hidden = tab.id !== name;
+            });
+
+            localStorage.setItem("lastTab", name);
+            document.getElementById("search").value = "";
+            searchText();
+        }
+
+        function searchText() {
+            let text = document.getElementById("search").value.toLowerCase();
+            let tab = document.querySelector(".tab:not([hidden])");
+            let elements = tab.querySelectorAll("h2, p");
+            let count = 0;
+
+            elements.forEach(element => {
+                let found = element.textContent.toLowerCase().includes(text);
+                element.hidden = text !== "" && !found;
+
+                if (found) count++;
+            });
+
+            document.getElementById("result").textContent =
+                text === "" ? "" :
+                count > 0 ? "Найдено: " + count :
+                "Ничего не найдено";
+        }
+
+        document.getElementById("search").addEventListener("input", searchText);
+
+        let lastTab = localStorage.getItem("lastTab");
+
+        if (document.getElementById(lastTab)) {
+            openTab(lastTab);
+        } else {
+            openTab("home");
+        }
+    </script>
+
+</body>
+</html>
