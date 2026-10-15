@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спортклуб</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1> Спортклуб</h1>
+        <p class="subtitle">Твой путь к сильному телу!</p>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="training">
+                Тренировки
+            </button>
+            <button class="tab" data-tab="coaches">
+                Тренеры
+            </button>
+            <button class="tab" data-tab="subscriptions">
+                Абонементы
+            </button>
+        </div>
+
+        <div id="content" class="content">
+            <h2>Наши тренировки</h2>
+            <p> Силовая тренировка</p>
+            <p> Кардио</p>
+            <p> Йога и растяжка</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
