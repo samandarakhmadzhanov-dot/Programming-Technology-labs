@@ -1,1 +1,174 @@
+const tabs = document.querySelectorAll(".tab");
+const content = document.getElementById("content");
 
+const events = [
+    { id: 1, name: "IT-конференция", date: "2026-11-10" },
+    { id: 2, name: "Спортивный день", date: "2026-11-15" },
+    { id: 3, name: "Встреча студентов", date: "2026-11-20" }
+];
+
+let participants = [];
+let message = "";
+
+function showEvents() {
+    content.innerHTML = `
+        <h2>Предстоящие события</h2>
+        ${events.map(event => `
+            <div class="event">
+                <h3>${event.name}</h3>
+                <p> Дата: ${event.date}</p>
+            </div>
+        `).join("")}
+    `;
+}
+
+function showRegistration() {
+    content.innerHTML = `
+        <h2>Регистрация на мероприятие</h2>
+
+        <div id="message"></div>
+
+        <form id="registrationForm">
+            <input id="name" type="text"
+                placeholder="Ваше имя" required>
+
+            <input id="email" type="email"
+                placeholder="Электронная почта" required>
+
+            <select id="event" required>
+                <option value="">Выберите мероприятие</option>
+                ${events.map(event => `
+                    <option value="${event.id}">
+                        ${event.name}
+                    </option>
+                `).join("")}
+            </select>
+
+            <button class="main-btn" type="submit">
+                Зарегистрироваться
+            </button>
+        </form>
+    `;
+
+    document.getElementById("registrationForm")
+        .addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name")
+                .value.trim();
+            const email = document.getElementById("email")
+                .value.trim();
+            const eventId = Number(
+                document.getElementById("event").value
+            );
+
+            const eventExists = events.some(
+                event => event.id === eventId
+            );
+
+            if (name.length < 2) {
+                showMessage("Введите имя минимум из 2 символов.", true);
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage("Введите правильный email.", true);
+                return;
+            }
+
+            if (!eventExists) {
+                showMessage("Выберите мероприятие.", true);
+                return;
+            }
+
+            const duplicate = participants.some(
+                p => p.email.toLowerCase() === email.toLowerCase()
+                && p.eventId === eventId
+            );
+
+            if (duplicate) {
+                showMessage(
+                    "Вы уже зарегистрированы на это мероприятие.", true
+                );
+                return;
+            }
+
+            participants.push({
+                id: Date.now(),
+                name,
+                email,
+                eventId
+            });
+
+            showRegistration();
+            showMessage("Регистрация успешно завершена!", false);
+        });
+}
+
+function showMessage(text, isError) {
+    const box = document.getElementById("message");
+    box.className = isError ? "message error" : "message";
+    box.textContent = text;
+}
+
+function showParticipants() {
+    content.innerHTML = `
+        <h2>Список участников</h2>
+        <p>Всего регистраций: ${participants.length}</p>
+
+        ${participants.length === 0
+            ? "<p>Пока нет зарегистрированных участников.</p>"
+            : participants.map(p => {
+                const event = events.find(
+                    item => item.id === p.eventId
+                );
+
+                return `
+                    <div class="participant">
+                        <h3>${p.name}</h3>
+                        <p> ${p.email}</p>
+                        <p> ${event ? event.name : "Мероприятие"}</p>
+                        <button class="main-btn"
+                            data-delete="${p.id}">
+                            Удалить
+                        </button>
+                    </div>
+                `;
+            }).join("")
+        }
+    `;
+
+    content.querySelectorAll("[data-delete]").forEach(button => {
+        button.addEventListener("click", () => {
+            const id = Number(button.dataset.delete);
+            participants = participants.filter(p => p.id !== id);
+            showParticipants();
+        });
+    });
+}
+
+function showPage(page) {
+    if (page === "events") {
+        showEvents();
+    } else if (page === "registration") {
+        showRegistration();
+
+        if (message) {
+            showMessage(message, false);
+            message = "";
+        }
+    } else {
+        showParticipants();
+    }
+}
+
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(item => item.classList.remove("active"));
+        tab.classList.add("active");
+
+        showPage(tab.dataset.tab);
+    });
+});
+
+showEvents();
