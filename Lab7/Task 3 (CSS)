@@ -1,26 +1,205 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление мероприятиями</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2ff;
+    color: #1e293b;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
 
-    <div class="container">
-        <h1> Управление мероприятиями</h1>
-        <p class="subtitle">События и регистрация участников</p>
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #00000015;
+}
 
-        <div class="tabs">
-            <button class="tab active" data-tab="events">События</button>
-            <button class="tab" data-tab="registration">Регистрация</button>
-            <button class="tab" data-tab="participants">Участники</button>
-        </div>
+h1, .subtitle {
+    text-align: center;
+}
 
-        <div id="content"></div>
-    </div>
+h1 {
+    color: #2563eb;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.subtitle {
+    color: #64748b;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px 5px;
+    border: none;
+    border-radius: 8px;
+    background: #e2e8f0;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #2563eb;
+    color: white;
+}
+
+.tab:hover {
+    opacity: 0.85;
+}
+
+.event, .participant {
+    padding: 15px;
+    margin-bottom: 12px;
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+.main-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.main-btn:hover {
+    background: #1d4ed8;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 7px;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+@media (max-width: 550px) {
+    .container {
+        margin: 15px;
+        padding: 15px;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+}
+
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #00000015;
+}
+
+h1, .subtitle {
+    text-align: center;
+}
+
+h1 {
+    color: #4f46e5;
+}
+
+.subtitle {
+    color: #64748b;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.tab {
+    flex: 1;
+    padding: 12px 5px;
+    border: none;
+    border-radius: 8px;
+    background: #e2e8f0;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #4f46e5;
+    color: white;
+}
+
+.tab:hover {
+    opacity: 0.85;
+}
+
+.question {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.question label {
+    display: block;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.main-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.main-btn:hover {
+    background: #3730a3;
+}
+
+#content {
+    line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+}
