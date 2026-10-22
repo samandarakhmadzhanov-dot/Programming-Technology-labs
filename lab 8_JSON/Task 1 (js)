@@ -1,0 +1,47 @@
+const language = document.getElementById("language");
+const title = document.getElementById("title");
+const label = document.getElementById("label");
+const message = document.getElementById("message");
+const button = document.getElementById("button");
+
+const translations = {
+    ru: {
+        title: "Выбор языка",
+        label: "Язык интерфейса:",
+        message: "Добро пожаловать!",
+        button: "Сохранить язык"
+    },
+    kk: {
+        title: "Тілді таңдау",
+        label: "Интерфейс тілі:",
+        message: "Қош келдіңіз!",
+        button: "Тілді сақтау"
+    },
+    en: {
+        title: "Language selection",
+        label: "Interface language:",
+        message: "Welcome!",
+        button: "Save language"
+    }
+};
+
+function changeLanguage(lang) {
+    title.textContent = translations[lang].title;
+    label.textContent = translations[lang].label;
+    message.textContent = translations[lang].message;
+    button.textContent = translations[lang].button;
+    language.value = lang;
+    document.documentElement.lang = lang;
+}
+
+language.addEventListener("change", () => {
+    changeLanguage(language.value);
+    localStorage.setItem("language", language.value);
+});
+
+button.addEventListener("click", () => {
+    localStorage.setItem("language", language.value);
+});
+
+const savedLanguage = localStorage.getItem("language") || "ru";
+changeLanguage(savedLanguage);
