@@ -1,0 +1,165 @@
+
+const projectName = document.getElementById("projectName");
+const projectDeadline = document.getElementById("projectDeadline");
+const projectsContainer = document.getElementById("projects");
+const search = document.getElementById("search");
+
+let projects = JSON.parse(localStorage.getItem("projects")) || [];
+
+function saveProjects() {
+    localStorage.setItem("projects", JSON.stringify(projects));
+}
+
+function renderProjects() {
+    projectsContainer.innerHTML = "";
+
+    const query = search.value.toLowerCase().trim();
+
+    projects.forEach(project => {
+        const matchingTasks = project.tasks.filter(task =>
+            task.name.toLowerCase().includes(query)
+        );
+
+        const projectMatches = project.name.toLowerCase().includes(query);
+        const visibleTasks = query && !projectMatches
+            ? matchingTasks
+            : project.tasks;
+
+        if (query && !projectMatches && matchingTasks.length === 0) {
+            return;
+        }
+
+        const card = document.createElement("div");
+        card.className = "project";
+
+        const heading = document.createElement("h2");
+        heading.textContent = project.name;
+
+        const deadline = document.createElement("p");
+        deadline.textContent = "Срок проекта: " + (project.deadline || "Не указан");
+
+        const deleteProject = document.createElement("button");
+        deleteProject.textContent = "Удалить проект";
+        deleteProject.className = "delete";
+
+        deleteProject.addEventListener("click", () => {
+            projects = projects.filter(item => item.id !== project.id);
+            saveProjects();
+            renderProjects();
+        });
+
+        const taskForm = document.createElement("div");
+        taskForm.className = "task-form";
+
+        const taskName = document.createElement("input");
+        taskName.placeholder = "Название задачи";
+
+        const taskDeadline = document.createElement("input");
+        taskDeadline.type = "date";
+
+        const taskStatus = document.createElement("select");
+
+        ["Не начата", "В процессе", "Завершена"].forEach(status => {
+            const option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            taskStatus.append(option);
+        });
+
+        const addTask = document.createElement("button");
+        addTask.textContent = "Добавить задачу";
+
+        addTask.addEventListener("click", () => {
+            if (!taskName.value.trim()) {
+                alert("Введите название задачи");
+                return;
+            }
+
+            project.tasks.push({
+                id: Date.now(),
+                name: taskName.value.trim(),
+                status: taskStatus.value,
+                deadline: taskDeadline.value
+            });
+
+            saveProjects();
+            renderProjects();
+        });
+
+        taskForm.append(taskName, taskDeadline, taskStatus, addTask);
+
+        card.append(heading, deadline, deleteProject, taskForm);
+
+        visibleTasks.forEach(task => {
+            const taskCard = document.createElement("div");
+            taskCard.className = "task";
+
+            const taskTitle = document.createElement("p");
+            taskTitle.textContent = "Задача: " + task.name;
+
+            const taskInfo = document.createElement("p");
+            taskInfo.textContent =
+                "Статус: " + task.status +
+                " | Срок: " + (task.deadline || "Не указан");
+
+            const statusSelect = document.createElement("select");
+
+            ["Не начата", "В процессе", "Завершена"].forEach(status => {
+                const option = document.createElement("option");
+                option.value = status;
+                option.textContent = status;
+                option.selected = task.status === status;
+                statusSelect.append(option);
+            });
+
+            statusSelect.addEventListener("change", () => {
+                task.status = statusSelect.value;
+                saveProjects();
+                renderProjects();
+            });
+
+            const deleteTask = document.createElement("button");
+            deleteTask.textContent = "Удалить задачу";
+            deleteTask.className = "delete";
+
+            deleteTask.addEventListener("click", () => {
+                project.tasks = project.tasks.filter(item => item.id !== task.id);
+                saveProjects();
+                renderProjects();
+            });
+
+            taskCard.append(taskTitle, taskInfo, statusSelect, deleteTask);
+            card.append(taskCard);
+        });
+
+        projectsContainer.append(card);
+    });
+
+    if (!projectsContainer.children.length) {
+        projectsContainer.textContent = "Ничего не найдено";
+    }
+}
+
+document.getElementById("addProject").addEventListener("click", () => {
+    if (!projectName.value.trim()) {
+        alert("Введите название проекта");
+        return;
+    }
+
+    projects.push({
+        id: Date.now(),
+        name: projectName.value.trim(),
+        deadline: projectDeadline.value,
+        tasks: []
+    });
+
+    saveProjects();
+    renderProjects();
+
+    projectName.value = "";
+    projectDeadline.value = "";
+});
+
+search.addEventListener("input", renderProjects);
+
+renderProjects();
