@@ -1,0 +1,60 @@
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+    const data = JSON.stringify(projects, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "projects.json";
+    link.click();
+
+    URL.revokeObjectURL(url);
+});
+
+document.getElementById("importBtn").addEventListener("click", () => {
+    document.getElementById("importFile").click();
+});
+
+document.getElementById("importFile").addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+        try {
+            const data = JSON.parse(reader.result);
+
+            const valid = Array.isArray(data) && data.every(project =>
+                Number.isFinite(project.id) &&
+                typeof project.name === "string" &&
+                typeof project.deadline === "string" &&
+                Array.isArray(project.tasks) &&
+                project.tasks.every(task =>
+                    Number.isFinite(task.id) &&
+                    typeof task.name === "string" &&
+                    ["Не начата", "В процессе", "Завершена"].includes(task.status) &&
+                    typeof task.deadline === "string"
+                )
+            );
+
+            if (!valid) {
+                alert("Некорректный формат файла!");
+                return;
+            }
+
+            projects = data;
+            saveProjects();
+            renderProjects();
+            alert("Данные успешно импортированы!");
+        } catch {
+            alert("Ошибка! Выберите правильный JSON-файл.");
+        }
+
+        event.target.value = "";
+    };
+
+    reader.readAsText(file);
+});
