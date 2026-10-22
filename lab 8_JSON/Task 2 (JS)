@@ -1,0 +1,79 @@
+const title = document.getElementById("title");
+const genre = document.getElementById("genre");
+const rating = document.getElementById("rating");
+const moviesContainer = document.getElementById("movies");
+const filter = document.getElementById("filter");
+
+let movies = JSON.parse(localStorage.getItem("movies")) || [];
+
+function saveMovies() {
+    localStorage.setItem("movies", JSON.stringify(movies));
+}
+
+function renderMovies() {
+    moviesContainer.innerHTML = "";
+
+    const selectedGenre = filter.value;
+
+    const filteredMovies = movies.filter(movie =>
+        selectedGenre === "Все" || movie.genre === selectedGenre
+    );
+
+    if (filteredMovies.length === 0) {
+        moviesContainer.textContent = "Фильмы не найдены";
+        return;
+    }
+
+    filteredMovies.forEach(movie => {
+        const card = document.createElement("div");
+        card.className = "movie";
+
+        const info = document.createElement("div");
+        const name = document.createElement("h3");
+        const details = document.createElement("p");
+        const deleteButton = document.createElement("button");
+
+        name.textContent = movie.title;
+        details.textContent = `Жанр: ${movie.genre} | ⭐ ${movie.rating}/10`;
+        deleteButton.textContent = "Удалить";
+        deleteButton.className = "delete";
+
+        deleteButton.addEventListener("click", () => {
+            movies = movies.filter(item => item.id !== movie.id);
+            saveMovies();
+            renderMovies();
+        });
+
+        info.append(name, details);
+        card.append(info, deleteButton);
+        moviesContainer.append(card);
+    });
+}
+
+document.getElementById("addButton").addEventListener("click", () => {
+    const movieTitle = title.value.trim();
+    const movieRating = Number(rating.value);
+
+    if (!movieTitle || rating.value === "" ||
+        movieRating < 1 || movieRating > 10) {
+        alert("Введите название фильма и рейтинг от 1 до 10");
+        return;
+    }
+
+    movies.push({
+        id: Date.now(),
+        title: movieTitle,
+        genre: genre.value,
+        rating: movieRating
+    });
+
+    saveMovies();
+    renderMovies();
+
+    title.value = "";
+    rating.value = "";
+});
+
+filter.addEventListener("change", renderMovies);
+
+renderMovies();
