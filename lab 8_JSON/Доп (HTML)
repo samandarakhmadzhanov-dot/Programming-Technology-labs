@@ -1,0 +1,5 @@
+<div class="storage-buttons">
+    <button id="exportBtn">Экспорт JSON</button>
+    <button id="importBtn">Импорт JSON</button>
+    <input type="file" id="importFile" accept=".json" hidden>
+</div>
