@@ -1,0 +1,88 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 30px 15px;
+}
+
+.container {
+    max-width: 750px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px #ccc;
+}
+
+h1 {
+    text-align: center;
+    color: #263449;
+}
+
+input, select, button {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+input {
+    width: 100%;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.project {
+    background: #f4f6f9;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #2563eb;
+}
+
+.task {
+    background: white;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.task p {
+    margin: 5px 0;
+}
+
+.delete {
+    background: #dc2626;
+}
+
+.task-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.task-form input,
+.task-form select,
+.task-form button {
+    width: 100%;
+    min-width: 0;
+}
+
+@media (max-width: 500px) {
+    .task-form {
+        grid-template-columns: 1fr;
+    }
+}
