@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог фильмов</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Каталог фильмов</h1>
+
+        <div class="form">
+            <input type="text" id="title" placeholder="Название фильма">
+
+            <select id="genre">
+                <option value="Боевик">Боевик</option>
+                <option value="Комедия">Комедия</option>
+                <option value="Драма">Драма</option>
+                <option value="Фантастика">Фантастика</option>
+                <option value="Ужасы">Ужасы</option>
+            </select>
+
+            <input type="number" id="rating" placeholder="Рейтинг (1–10)" min="1" max="10">
+
+            <button id="addButton">Добавить фильм</button>
+        </div>
+
+        <select id="filter">
+            <option value="Все">Все жанры</option>
+            <option value="Боевик">Боевик</option>
+            <option value="Комедия">Комедия</option>
+            <option value="Драма">Драма</option>
+            <option value="Фантастика">Фантастика</option>
+            <option value="Ужасы">Ужасы</option>
+        </select>
+
+        <div id="movies"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
