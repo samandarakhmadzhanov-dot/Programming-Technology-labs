@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -49,6 +50,7 @@ h1 span {
 .description {
     text-align: center;
     color: #a7bbd8;
+    line-height: 1.5;
 }
 
 form {
@@ -78,9 +80,10 @@ button {
     border-radius: 10px;
     background: #25c98c;
     color: #071b16;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.2s;
 }
 
 button:hover {
@@ -99,6 +102,7 @@ button:disabled {
     color: #a9c2e8;
     background: #192840;
     overflow-wrap: anywhere;
+    line-height: 1.5;
 }
 
 #status.success {
@@ -139,6 +143,81 @@ button:disabled {
     color: #9db7dc;
 }
 
+.history-section {
+    margin-top: 28px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.history-header h2 {
+    font-size: 19px;
+    margin: 0;
+}
+
+.clear-btn {
+    padding: 9px 12px;
+    background: #263852;
+    color: #c5d4e9;
+    border: 1px solid #3a5277;
+}
+
+.clear-btn:hover {
+    background: #344a67;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #192840;
+    border: 1px solid #2c4568;
+    border-radius: 10px;
+}
+
+.history-info {
+    min-width: 0;
+}
+
+.history-info strong {
+    display: block;
+    color: #43e5a8;
+    margin-bottom: 5px;
+    overflow-wrap: anywhere;
+}
+
+.history-info span {
+    color: #a7bbd8;
+    font-size: 12px;
+}
+
+.history-item button {
+    padding: 9px 12px;
+    flex-shrink: 0;
+}
+
+.empty-history {
+    color: #8fa4c2;
+    font-size: 14px;
+    padding: 15px;
+    text-align: center;
+    border: 1px dashed #3a5277;
+    border-radius: 10px;
+}
+
 .footer {
     margin-top: 25px;
     padding: 15px;
@@ -155,6 +234,11 @@ button:disabled {
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
     .container {
         padding: 20px;
     }
@@ -167,7 +251,15 @@ button:disabled {
         flex-direction: column;
     }
 
-    button {
+    form button {
         width: 100%;
+    }
+
+    .history-item {
+        align-items: flex-start;
+    }
+
+    .history-item button {
+        padding: 9px;
     }
 }
