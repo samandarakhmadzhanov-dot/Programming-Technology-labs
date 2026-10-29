@@ -1,1 +1,64 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoSpace | Каталог фотографий</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Photo<span>Space</span></div>
+        <p>Твоя коллекция фотографий</p>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <div>
+                <p class="subtitle">ФОТОГАЛЕРЕЯ</p>
+                <h1>Открой свой мир</h1>
+                <p class="description">Смотри фотографии, исследуй альбомы и находи вдохновение.</p>
+            </div>
+            <div class="photo-icon">📸</div>
+        </section>
+
+        <section class="toolbar">
+            <div>
+                <label for="albumSelect">Выбери альбом</label>
+                <select id="albumSelect">
+                    <option value="1">Альбом 1</option>
+                    <option value="2">Альбом 2</option>
+                    <option value="3">Альбом 3</option>
+                    <option value="4">Альбом 4</option>
+                    <option value="5">Альбом 5</option>
+                </select>
+            </div>
+            <div class="counter" id="photoCounter">Фотографий: 0</div>
+        </section>
+
+        <div id="status" class="status" role="status" aria-live="polite">
+            Загрузка фотографий...
+        </div>
+
+        <div id="errorBox" class="error-box" hidden>
+            <div class="error-icon">!</div>
+            <h3>Не удалось загрузить фотографии</h3>
+            <p id="errorMessage">Проверь подключение к интернету.</p>
+            <button id="retryBtn" class="retry-btn">↻ Повторить</button>
+        </div>
+
+        <section id="photoGrid" class="photo-grid"></section>
+
+        <nav id="pagination" class="pagination" aria-label="Страницы фотографий">
+            <button id="prevBtn" class="page-btn">← Назад</button>
+            <div id="pageNumbers" class="page-numbers"></div>
+            <button id="nextBtn" class="page-btn">Вперёд →</button>
+        </nav>
+
+        <footer>PhotoSpace © 2026 · Каталог фотографий</footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
