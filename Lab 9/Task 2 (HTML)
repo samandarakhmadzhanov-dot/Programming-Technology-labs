@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список публикаций</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Публикации</h1>
 
+    <!-- Панель управления -->
+    <div class="controls">
+      <div class="control-group">
+        <label for="sort-select">Сортировка:</label>
+        <select id="sort-select">
+          <option value="id-asc">ID (по возрастанию)</option>
+          <option value="id-desc">ID (по убыванию)</option>
+          <option value="title-asc">Название (А–Я)</option>
+          <option value="title-desc">Название (Я–А)</option>
+        </select>
+      </div>
+
+      <button id="reload-btn" class="btn">
+        <span class="btn-icon">↻</span> Повторить запрос
+      </button>
+    </div>
+
+    <!-- Индикатор загрузки / ошибок -->
+    <div id="status-message" class="status-message hidden"></div>
+
+    <!-- Контейнер для списка -->
+    <div id="posts-container" class="posts-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
