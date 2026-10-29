@@ -25,7 +25,6 @@ h1 {
   font-size: 24px;
 }
 
-/* Панель управления */
 .controls {
   display: flex;
   justify-content: space-between;
@@ -62,7 +61,6 @@ select:focus {
   border-color: #0066cc;
 }
 
-/* Кнопка повторного запроса */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -87,7 +85,6 @@ select:focus {
   cursor: not-allowed;
 }
 
-/* Карточки публикаций */
 .posts-list {
   display: flex;
   flex-direction: column;
@@ -130,7 +127,6 @@ select:focus {
   line-height: 1.5;
 }
 
-/* Сообщения о статусе */
 .status-message {
   padding: 12px;
   margin-bottom: 16px;
