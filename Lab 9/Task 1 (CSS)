@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: #f8fafc;
+    background: linear-gradient(135deg, #101827, #080d19);
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    background: #142035;
+    border: 1px solid #29466f;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px #0005;
+}
+
+.avatar {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #35dda0;
+    border-radius: 50%;
+    color: #35dda0;
+    font-size: 45px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+}
+
+h1 span {
+    color: #35dda0;
+}
+
+.description {
+    text-align: center;
+    color: #a7bbd8;
+}
+
+form {
+    display: flex;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px;
+    color: white;
+    background: #1c2a42;
+    border: 1px solid #3a5277;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: 2px solid #35dda0;
+}
+
+button {
+    padding: 14px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #25c98c;
+    color: #071b16;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #43e5a8;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+#status {
+    padding: 15px;
+    border: 1px solid #2c4568;
+    border-radius: 10px;
+    color: #a9c2e8;
+    background: #192840;
+    overflow-wrap: anywhere;
+}
+
+#status.success {
+    color: #43e5a8;
+}
+
+#status.error {
+    color: #ff9292;
+}
+
+#status.loading {
+    color: #ffd580;
+}
+
+.card {
+    margin-top: 20px;
+    padding: 25px;
+    background: #192840;
+    border: 1px solid #2b4568;
+    border-radius: 15px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #43e5a8;
+    overflow-wrap: anywhere;
+}
+
+.card p {
+    padding: 14px 0;
+    margin: 0;
+    border-top: 1px solid #2c405d;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.label {
+    color: #9db7dc;
+}
+
+.footer {
+    margin-top: 25px;
+    padding: 15px;
+    text-align: center;
+    color: #a7bbd8;
+    background: #111e32;
+    border: 1px solid #263b59;
+    border-radius: 10px;
+}
+
+.footer span {
+    color: #43e5a8;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
