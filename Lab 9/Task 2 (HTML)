@@ -10,7 +10,6 @@
   <div class="container">
     <h1>Публикации</h1>
 
-    <!-- Панель управления -->
     <div class="controls">
       <div class="control-group">
         <label for="sort-select">Сортировка:</label>
@@ -27,10 +26,8 @@
       </button>
     </div>
 
-    <!-- Индикатор загрузки / ошибок -->
     <div id="status-message" class="status-message hidden"></div>
 
-    <!-- Контейнер для списка -->
     <div id="posts-container" class="posts-list"></div>
   </div>
 
