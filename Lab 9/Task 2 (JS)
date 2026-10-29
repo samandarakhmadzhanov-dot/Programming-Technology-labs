@@ -1,87 +1,238 @@
-const postsContainer = document.getElementById('posts-container');
-const sortSelect = document.getElementById('sort-select');
-const reloadBtn = document.getElementById('reload-btn');
-const statusMessage = document.getElementById('status-message');
+
+const postsContainer = document.getElementById("posts-container");
+const sortSelect = document.getElementById("sort-select");
+const reloadBtn = document.getElementById("reload-btn");
+const statusMessage = document.getElementById("status-message");
+const allBtn = document.getElementById("all-btn");
+const favoritesBtn = document.getElementById("favorites-btn");
+const favoritesCount = document.getElementById("favorites-count");
 
 let posts = [];
+let loading = false;
+let showFavorites = false;
+let requestNumber = 0;
+let favorites = [];
 
-function showStatus(message, type = 'info') {
-  statusMessage.textContent = message;
-  statusMessage.className = `status-message ${type}`;
+try {
+    const saved = JSON.parse(localStorage.getItem("favoritePosts") || "[]");
+
+    if (Array.isArray(saved)) {
+        favorites = saved.filter(id => Number.isInteger(id));
+    }
+} catch {
+    favorites = [];
+}
+
+function showStatus(message, type = "info", retry = false) {
+    statusMessage.replaceChildren();
+    statusMessage.className = `status-message ${type}`;
+
+    const text = document.createElement("div");
+    text.textContent = message;
+    statusMessage.appendChild(text);
+
+    if (retry) {
+        const button = document.createElement("button");
+        button.className = "retry-btn";
+        button.textContent = "↻ Повторить";
+        button.addEventListener("click", fetchPosts);
+        statusMessage.appendChild(button);
+    }
 }
 
 function hideStatus() {
-  statusMessage.className = 'status-message hidden';
+    statusMessage.className = "status-message hidden";
+    statusMessage.replaceChildren();
 }
 
 async function fetchPosts() {
-  showStatus('Загрузка публикаций...', 'info');
-  postsContainer.innerHTML = '';
-  reloadBtn.disabled = true;
+    if (loading) return;
 
-  try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=15');
-    
-    if (!response.ok) {
-      throw new Error(`Ошибка сервера: ${response.status}`);
+    loading = true;
+    const currentRequest = ++requestNumber;
+
+    reloadBtn.disabled = true;
+    showStatus("Загрузка публикаций...", "info");
+    postsContainer.replaceChildren();
+
+    try {
+        const response = await fetch(
+            "https://jsonplaceholder.typicode.com/posts?_limit=15"
+        );
+
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error("Получены некорректные данные.");
+        }
+
+        if (currentRequest !== requestNumber) return;
+
+        posts = data;
+        hideStatus();
+        renderSortedPosts();
+    } catch (error) {
+        if (currentRequest !== requestNumber) return;
+
+        posts = [];
+        renderSortedPosts();
+
+        showStatus(
+            `Не удалось загрузить публикации. ${error.message}`,
+            "error",
+            true
+        );
+    } finally {
+        if (currentRequest === requestNumber) {
+            loading = false;
+            reloadBtn.disabled = false;
+        }
     }
-
-    posts = await response.json();
-    hideStatus();
-    renderSortedPosts();
-  } catch (error) {
-    showStatus(`Не удалось загрузить данные: ${error.message}`, 'error');
-  } finally {
-    reloadBtn.disabled = false;
-  }
 }
 
 function getSortedPosts() {
-  const sortValue = sortSelect.value;
-  const sorted = [...posts];
+    const sorted = [...posts];
+    const sortValue = sortSelect.value;
 
-  switch (sortValue) {
-    case 'id-asc':
-      return sorted.sort((a, b) => a.id - b.id);
-    case 'id-desc':
-      return sorted.sort((a, b) => b.id - a.id);
-    case 'title-asc':
-      return sorted.sort((a, b) => a.title.localeCompare(b.title));
-    case 'title-desc':
-      return sorted.sort((a, b) => b.title.localeCompare(a.title));
-    default:
-      return sorted;
-  }
+    switch (sortValue) {
+        case "id-asc":
+            sorted.sort((a, b) => a.id - b.id);
+            break;
+        case "id-desc":
+            sorted.sort((a, b) => b.id - a.id);
+            break;
+        case "title-asc":
+            sorted.sort((a, b) => a.title.localeCompare(b.title, "ru"));
+            break;
+        case "title-desc":
+            sorted.sort((a, b) => b.title.localeCompare(a.title, "ru"));
+            break;
+    }
+
+    return sorted;
+}
+
+function updateFavoritesCount() {
+    favoritesCount.textContent = favorites.length;
+}
+
+function saveFavorites() {
+    try {
+        localStorage.setItem("favoritePosts", JSON.stringify(favorites));
+        updateFavoritesCount();
+        return true;
+    } catch {
+        showStatus(
+            "Не удалось сохранить избранное. Проверь настройки хранилища браузера.",
+            "error"
+        );
+        return false;
+    }
 }
 
 function renderSortedPosts() {
-  const sortedPosts = getSortedPosts();
-  postsContainer.innerHTML = '';
+    postsContainer.replaceChildren();
 
-  if (sortedPosts.length === 0) {
-    postsContainer.innerHTML = '<p>Публикации не найдены.</p>';
-    return;
-  }
+    const sortedPosts = getSortedPosts();
+    const visiblePosts = showFavorites
+        ? sortedPosts.filter(post => favorites.includes(post.id))
+        : sortedPosts;
 
-  const fragment = document.createDocumentFragment();
+    allBtn.classList.toggle("active", !showFavorites);
+    favoritesBtn.classList.toggle("active", showFavorites);
 
-  sortedPosts.forEach(post => {
-    const postElement = document.createElement('article');
-    postElement.className = 'post-card';
-    postElement.innerHTML = `
-      <div class="post-header">
-        <span class="post-id">#${post.id}</span>
-        <h2 class="post-title">${post.title}</h2>
-      </div>
-      <p class="post-body">${post.body}</p>
-    `;
-    fragment.appendChild(postElement);
-  });
+    if (visiblePosts.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "empty-message";
+        empty.textContent = showFavorites
+            ? "У тебя пока нет избранных публикаций."
+            : "Публикации не найдены.";
 
-  postsContainer.appendChild(fragment);
+        postsContainer.appendChild(empty);
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    visiblePosts.forEach(post => {
+        const card = document.createElement("article");
+        card.className = "post-card";
+
+        const header = document.createElement("div");
+        header.className = "post-header";
+
+        const id = document.createElement("span");
+        id.className = "post-id";
+        id.textContent = `#${post.id}`;
+
+        const title = document.createElement("h2");
+        title.className = "post-title";
+        title.textContent = post.title;
+
+        header.append(id, title);
+
+        const body = document.createElement("p");
+        body.className = "post-body";
+        body.textContent = post.body;
+
+        const favoriteBtn = document.createElement("button");
+        favoriteBtn.className = "favorite-btn";
+
+        function updateFavoriteButton() {
+            const selected = favorites.includes(post.id);
+
+            favoriteBtn.textContent = selected
+                ? "♥ В избранном"
+                : "♡ В избранное";
+
+            favoriteBtn.classList.toggle("selected", selected);
+        }
+
+        updateFavoriteButton();
+
+        favoriteBtn.addEventListener("click", () => {
+            const previousFavorites = [...favorites];
+
+            if (favorites.includes(post.id)) {
+                favorites = favorites.filter(id => id !== post.id);
+            } else {
+                favorites.push(post.id);
+            }
+
+            if (!saveFavorites()) {
+                favorites = previousFavorites;
+                updateFavoritesCount();
+                renderSortedPosts();
+                return;
+            }
+
+            renderSortedPosts();
+        });
+
+        card.append(header, body, favoriteBtn);
+        fragment.appendChild(card);
+    });
+
+    postsContainer.appendChild(fragment);
 }
 
-sortSelect.addEventListener('change', renderSortedPosts);
-reloadBtn.addEventListener('click', fetchPosts);
+sortSelect.addEventListener("change", renderSortedPosts);
 
-document.addEventListener('DOMContentLoaded', fetchPosts);
+reloadBtn.addEventListener("click", fetchPosts);
+
+allBtn.addEventListener("click", () => {
+    showFavorites = false;
+    renderSortedPosts();
+});
+
+favoritesBtn.addEventListener("click", () => {
+    showFavorites = true;
+    renderSortedPosts();
+});
+
+updateFavoritesCount();
+fetchPosts();
