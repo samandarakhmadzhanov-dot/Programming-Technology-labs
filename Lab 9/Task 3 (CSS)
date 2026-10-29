@@ -11,7 +11,7 @@ body {
 
 .header {
     padding: 22px 8%;
-    background: #ffffff;
+    background: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,7 +81,7 @@ body {
     justify-content: space-between;
     align-items: end;
     gap: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .toolbar label {
@@ -110,6 +110,29 @@ select:focus {
     color: #777b90;
     font-size: 14px;
     padding-bottom: 13px;
+}
+
+.favorites-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 12px 18px;
+    border: 1px solid #dedfeb;
+    border-radius: 12px;
+    background: white;
+    color: #393d56;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-btn.active {
+    background: #7256e8;
+    color: white;
+    border-color: #7256e8;
 }
 
 .status {
@@ -173,12 +196,30 @@ select:focus {
     line-height: 1.5;
     margin: 0 0 9px;
     text-transform: capitalize;
+    overflow-wrap: anywhere;
 }
 
 .photo-info p {
     color: #85889a;
     font-size: 12px;
     margin: 0;
+}
+
+.favorite-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px;
+    border: 1px solid #dedfeb;
+    background: white;
+    border-radius: 9px;
+    cursor: pointer;
+    color: #7256e8;
+}
+
+.favorite-btn.selected {
+    background: #fff0f5;
+    color: #d6336c;
+    border-color: #f5bfd2;
 }
 
 .error-box {
@@ -237,6 +278,8 @@ select:focus {
 .page-numbers {
     display: flex;
     gap: 7px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .page-btn,
