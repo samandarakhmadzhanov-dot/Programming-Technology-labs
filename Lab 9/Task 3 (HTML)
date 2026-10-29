@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -18,7 +17,9 @@
             <div>
                 <p class="subtitle">ФОТОГАЛЕРЕЯ</p>
                 <h1>Открой свой мир</h1>
-                <p class="description">Смотри фотографии, исследуй альбомы и находи вдохновение.</p>
+                <p class="description">
+                    Смотри фотографии, исследуй альбомы и сохраняй любимые моменты.
+                </p>
             </div>
             <div class="photo-icon">📸</div>
         </section>
@@ -35,6 +36,15 @@
                 </select>
             </div>
             <div class="counter" id="photoCounter">Фотографий: 0</div>
+        </section>
+
+        <section class="favorites-toolbar">
+            <button id="allPhotosBtn" class="filter-btn active">
+                Все фотографии
+            </button>
+            <button id="favoritesBtn" class="filter-btn">
+                ♥ Избранное (<span id="favoritesCount">0</span>)
+            </button>
         </section>
 
         <div id="status" class="status" role="status" aria-live="polite">
