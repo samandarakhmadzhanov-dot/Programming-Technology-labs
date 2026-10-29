@@ -9,6 +9,9 @@ const pagination = document.getElementById("pagination");
 const pageNumbers = document.getElementById("pageNumbers");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const allPhotosBtn = document.getElementById("allPhotosBtn");
+const favoritesBtn = document.getElementById("favoritesBtn");
+const favoritesCount = document.getElementById("favoritesCount");
 
 const photosPerPage = 12;
 
@@ -16,6 +19,29 @@ let photos = [];
 let currentPage = 1;
 let loading = false;
 let requestNumber = 0;
+let showFavorites = false;
+let favorites = [];
+
+try {
+    const savedFavorites = JSON.parse(
+        localStorage.getItem("favorites") || "[]"
+    );
+
+    if (Array.isArray(savedFavorites)) {
+        favorites = savedFavorites.filter(id => Number.isInteger(id));
+    }
+} catch {
+    favorites = [];
+}
+
+function updateFavoritesCount() {
+    favoritesCount.textContent = favorites.length;
+}
+
+function updateFilterButtons() {
+    allPhotosBtn.classList.toggle("active", !showFavorites);
+    favoritesBtn.classList.toggle("active", showFavorites);
+}
 
 async function loadPhotos() {
     if (loading) return;
@@ -54,26 +80,20 @@ async function loadPhotos() {
         currentPage = 1;
 
         status.hidden = true;
-        photoCounter.textContent = `Фотографий: ${photos.length}`;
-
-        if (photos.length === 0) {
-            status.hidden = false;
-            status.className = "status";
-            status.textContent = "В этом альбоме фотографий нет.";
-            return;
-        }
-
         renderPhotos();
     } catch (error) {
         if (currentRequest !== requestNumber) return;
 
         photos = [];
+        photoGrid.innerHTML = "";
         photoCounter.textContent = "Фотографий: 0";
         status.hidden = true;
+        pagination.hidden = true;
         errorBox.hidden = false;
+
         errorMessage.textContent =
-            error.message === "Failed to fetch"
-                ? "Проверь подключение к интернету и попробуй снова."
+            error instanceof TypeError
+                ? "Не удалось подключиться к серверу. Проверь интернет и попробуй снова."
                 : error.message;
     } finally {
         if (currentRequest === requestNumber) {
@@ -85,8 +105,39 @@ async function loadPhotos() {
 function renderPhotos() {
     photoGrid.innerHTML = "";
 
+    const visiblePhotos = showFavorites
+        ? photos.filter(photo => favorites.includes(photo.id))
+        : photos;
+
+    const totalPages = Math.ceil(visiblePhotos.length / photosPerPage);
+
+    if (totalPages > 0) {
+        currentPage = Math.min(currentPage, totalPages);
+    } else {
+        currentPage = 1;
+    }
+
+    photoCounter.textContent = showFavorites
+        ? `Избранное: ${visiblePhotos.length}`
+        : `Фотографий: ${photos.length}`;
+
+    if (visiblePhotos.length === 0) {
+        status.hidden = false;
+        status.className = "status";
+        status.textContent = showFavorites
+            ? "В этом альбоме пока нет избранных фотографий."
+            : "Фотографии не найдены.";
+
+        pagination.hidden = true;
+        updateFavoritesCount();
+        updateFilterButtons();
+        return;
+    }
+
+    status.hidden = true;
+
     const start = (currentPage - 1) * photosPerPage;
-    const pagePhotos = photos.slice(start, start + photosPerPage);
+    const pagePhotos = visiblePhotos.slice(start, start + photosPerPage);
 
     pagePhotos.forEach(photo => {
         const card = document.createElement("article");
@@ -111,17 +162,56 @@ function renderPhotos() {
         const album = document.createElement("p");
         album.textContent = `Альбом ${photo.albumId} · Фото №${photo.id}`;
 
-        info.append(title, album);
+        const favoriteButton = document.createElement("button");
+        favoriteButton.className = "favorite-btn";
+
+        function updateFavoriteButton() {
+            const selected = favorites.includes(photo.id);
+
+            favoriteButton.textContent = selected
+                ? "♥ В избранном"
+                : "♡ В избранное";
+
+            favoriteButton.classList.toggle("selected", selected);
+        }
+
+        updateFavoriteButton();
+
+        favoriteButton.addEventListener("click", () => {
+            if (favorites.includes(photo.id)) {
+                favorites = favorites.filter(id => id !== photo.id);
+            } else {
+                favorites.push(photo.id);
+            }
+
+            try {
+                localStorage.setItem("favorites", JSON.stringify(favorites));
+            } catch {
+                errorBox.hidden = false;
+                errorMessage.textContent =
+                    "Не удалось сохранить избранное в браузере.";
+            }
+
+            updateFavoritesCount();
+
+            if (showFavorites) {
+                renderPhotos();
+            } else {
+                updateFavoriteButton();
+            }
+        });
+
+        info.append(title, album, favoriteButton);
         card.append(image, info);
         photoGrid.appendChild(card);
     });
 
-    renderPagination();
+    renderPagination(totalPages);
+    updateFavoritesCount();
+    updateFilterButtons();
 }
 
-function renderPagination() {
-    const totalPages = Math.ceil(photos.length / photosPerPage);
-
+function renderPagination(totalPages) {
     pagination.hidden = totalPages <= 1;
     pageNumbers.innerHTML = "";
 
@@ -151,8 +241,19 @@ function renderPagination() {
 }
 
 albumSelect.addEventListener("change", loadPhotos);
-
 retryBtn.addEventListener("click", loadPhotos);
+
+allPhotosBtn.addEventListener("click", () => {
+    showFavorites = false;
+    currentPage = 1;
+    renderPhotos();
+});
+
+favoritesBtn.addEventListener("click", () => {
+    showFavorites = true;
+    currentPage = 1;
+    renderPhotos();
+});
 
 prevBtn.addEventListener("click", () => {
     if (currentPage > 1) {
@@ -162,7 +263,11 @@ prevBtn.addEventListener("click", () => {
 });
 
 nextBtn.addEventListener("click", () => {
-    const totalPages = Math.ceil(photos.length / photosPerPage);
+    const visiblePhotos = showFavorites
+        ? photos.filter(photo => favorites.includes(photo.id))
+        : photos;
+
+    const totalPages = Math.ceil(visiblePhotos.length / photosPerPage);
 
     if (currentPage < totalPages) {
         currentPage++;
@@ -170,4 +275,5 @@ nextBtn.addEventListener("click", () => {
     }
 });
 
+updateFavoritesCount();
 loadPhotos();
