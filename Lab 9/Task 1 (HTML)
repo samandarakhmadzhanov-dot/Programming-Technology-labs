@@ -23,9 +23,23 @@
             <button type="submit" id="searchBtn">Найти</button>
         </form>
 
-        <p id="status">Введите ID и нажмите «Найти»</p>
+        <p id="status" role="status" aria-live="polite">
+            Введите ID и нажмите «Найти»
+        </p>
 
         <div id="result"></div>
+
+        <section class="history-section">
+            <div class="history-header">
+                <h2>История поиска</h2>
+                <button type="button" id="clearHistoryBtn" class="clear-btn">
+                    Очистить
+                </button>
+            </div>
+            <div id="history" class="history-list">
+                <p class="empty-history">История пока пуста</p>
+            </div>
+        </section>
 
         <div class="footer">
             Количество запросов: <span id="count">0</span>
