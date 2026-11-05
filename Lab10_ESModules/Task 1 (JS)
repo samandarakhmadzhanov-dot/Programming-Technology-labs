@@ -1,1 +1,50 @@
+function convert(value, operation) {
+    switch (operation) {
+        case "km-m":
+            return value * 1000 + " м";
 
+        case "m-km":
+            return value / 1000 + " км";
+
+        case "kg-g":
+            return value * 1000 + " г";
+
+        case "g-kg":
+            return value / 1000 + " кг";
+
+        case "min-sec":
+            return value * 60 + " секунд";
+
+        case "sec-min":
+            return value / 60 + " минут";
+
+        default:
+            return "Ошибка операции";
+    }
+}
+
+const button = document.getElementById("convert");
+const input = document.getElementById("value");
+const operation = document.getElementById("operation");
+const result = document.getElementById("result");
+
+function calculate() {
+    const value = input.value;
+
+    if (value.trim() === "" || !Number.isFinite(Number(value)) || Number(value) < 0) {
+        result.textContent = "Введите правильное число!";
+        return;
+    }
+
+    const answer = convert(Number(value), operation.value);
+
+    result.textContent = "Результат: " + answer;
+}
+
+button.addEventListener("click", calculate);
+
+input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        calculate();
+    }
+});
