@@ -1,1 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебная аналитика</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
 
+<div class="container">
+
+    <h1>Учебная аналитика</h1>
+    <p class="subtitle">Анализ успеваемости студентов</p>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Средний балл</h3>
+            <span id="average">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Максимальная оценка</h3>
+            <span id="maximum">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Минимальная оценка</h3>
+            <span id="minimum">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Отличники</h3>
+            <span id="excellent">0</span>
+        </div>
+
+        <div class="card">
+            <h3>Успеваемость</h3>
+            <span id="passed">0</span>
+        </div>
+    </div>
+
+    <h2>Список студентов</h2>
+
+    <div class="filters">
+        <input type="text" id="search" placeholder="Поиск по имени">
+
+        <select id="group">
+            <option value="all">Все группы</option>
+            <option value="ИС-25-21">ИС-25-21</option>
+            <option value="ИС-25-22">ИС-25-22</option>
+        </select>
+
+        <select id="grade">
+            <option value="all">Все оценки</option>
+            <option value="excellent">Отлично (90–100)</option>
+            <option value="good">Хорошо (70–89)</option>
+            <option value="satisfactory">Удовлетворительно (50–69)</option>
+            <option value="low">Ниже 50</option>
+        </select>
+    </div>
+
+    <p id="count">Количество студентов: 0</p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Группа</th>
+                    <th>Дисциплина</th>
+                    <th>Оценка</th>
+                </tr>
+            </thead>
+            <tbody id="studentList"></tbody>
+        </table>
+    </div>
+
+    <p id="empty">Студенты не найдены</p>
+
+</div>
+
+</body>
+</html>
