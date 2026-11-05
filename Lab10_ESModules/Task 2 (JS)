@@ -1,1 +1,62 @@
+const STORAGE_KEY = "contacts";
 
+let contacts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+if (contacts.length === 0) {
+    contacts = [
+        { id: 1, name: "Самандар", phone: "+7 777 123 45 67" },
+        { id: 2, name: "Али", phone: "+7 701 222 33 44" },
+        { id: 3, name: "Нурислам", phone: "+7 702 555 66 77" },
+        { id: 4, name: "Данияр", phone: "+7 705 111 22 33" },
+        { id: 5, name: "Мирас", phone: "+7 707 888 99 00" }
+    ];
+
+    saveContacts();
+}
+
+function saveContacts() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+}
+
+function filterContacts(search) {
+    const query = search.toLowerCase().trim();
+
+    return contacts.filter(contact =>
+        contact.name.toLowerCase().includes(query) ||
+        contact.phone.includes(query)
+    );
+}
+
+function renderContacts(list) {
+    const contactList = document.getElementById("contactList");
+    const counter = document.getElementById("counter");
+    const empty = document.getElementById("empty");
+
+    contactList.innerHTML = "";
+
+    counter.textContent = "Найдено контактов: " + list.length;
+
+    empty.style.display = list.length === 0 ? "block" : "none";
+
+    list.forEach(contact => {
+        const li = document.createElement("li");
+
+        const name = document.createElement("strong");
+        name.textContent = contact.name;
+
+        const phone = document.createElement("span");
+        phone.textContent = contact.phone;
+
+        li.append(name, phone);
+        contactList.appendChild(li);
+    });
+}
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", () => {
+    const result = filterContacts(searchInput.value);
+    renderContacts(result);
+});
+
+renderContacts(contacts);
