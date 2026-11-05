@@ -1,1 +1,124 @@
+// DATA.JS
 
+const students = [
+    { id: 1, name: "Самандар", group: "ИС-25-21", subject: "Программирование", grade: 95 },
+    { id: 2, name: "Али", group: "ИС-25-21", subject: "Базы данных", grade: 85 },
+    { id: 3, name: "Нурислам", group: "ИС-25-21", subject: "Программирование", grade: 72 },
+    { id: 4, name: "Данияр", group: "ИС-25-21", subject: "Базы данных", grade: 90 },
+    { id: 5, name: "Мирас", group: "ИС-25-22", subject: "Программирование", grade: 65 },
+    { id: 6, name: "Арман", group: "ИС-25-22", subject: "Базы данных", grade: 78 },
+    { id: 7, name: "Азамат", group: "ИС-25-22", subject: "Программирование", grade: 55 },
+    { id: 8, name: "Ержан", group: "ИС-25-22", subject: "Базы данных", grade: 100 }
+];
+
+// STATS.JS
+
+function getAverage(data) {
+    if (data.length === 0) return 0;
+
+    const sum = data.reduce((total, student) => total + student.grade, 0);
+
+    return (sum / data.length).toFixed(2);
+}
+
+function getMaxGrade(data) {
+    if (data.length === 0) return 0;
+
+    return Math.max(...data.map(student => student.grade));
+}
+
+function getMinGrade(data) {
+    if (data.length === 0) return 0;
+
+    return Math.min(...data.map(student => student.grade));
+}
+
+function getExcellent(data) {
+    return data.filter(student => student.grade >= 90).length;
+}
+
+function getPassed(data) {
+    return data.filter(student => student.grade >= 50).length;
+}
+
+// FILTERS.JS
+
+function filterStudents(data, search, group, grade) {
+    return data.filter(student => {
+        const nameMatch = student.name.toLowerCase().includes(search.toLowerCase());
+
+        const groupMatch = group === "all" || student.group === group;
+
+        const gradeMatch =
+            grade === "all" ||
+            (grade === "excellent" && student.grade >= 90) ||
+            (grade === "good" && student.grade >= 70 && student.grade < 90) ||
+            (grade === "satisfactory" && student.grade >= 50 && student.grade < 70) ||
+            (grade === "low" && student.grade < 50);
+
+        return nameMatch && groupMatch && gradeMatch;
+    });
+}
+
+// UI.JS
+
+const searchInput = document.getElementById("search");
+const groupSelect = document.getElementById("group");
+const gradeSelect = document.getElementById("grade");
+const studentList = document.getElementById("studentList");
+
+function showStats(data) {
+    document.getElementById("average").textContent = getAverage(data);
+    document.getElementById("maximum").textContent = getMaxGrade(data);
+    document.getElementById("minimum").textContent = getMinGrade(data);
+    document.getElementById("excellent").textContent = getExcellent(data);
+    document.getElementById("passed").textContent = getPassed(data);
+}
+
+function renderStudents(data) {
+    studentList.innerHTML = "";
+
+    document.getElementById("count").textContent =
+        "Количество студентов: " + data.length;
+
+    document.getElementById("empty").style.display =
+        data.length === 0 ? "block" : "none";
+
+    data.forEach(student => {
+        const row = document.createElement("tr");
+
+        const name = document.createElement("td");
+        name.textContent = student.name;
+
+        const group = document.createElement("td");
+        group.textContent = student.group;
+
+        const subject = document.createElement("td");
+        subject.textContent = student.subject;
+
+        const grade = document.createElement("td");
+        grade.textContent = student.grade;
+
+        row.append(name, group, subject, grade);
+
+        studentList.appendChild(row);
+    });
+}
+
+function updateDashboard() {
+    const filtered = filterStudents(
+        students,
+        searchInput.value,
+        groupSelect.value,
+        gradeSelect.value
+    );
+
+    renderStudents(filtered);
+    showStats(filtered);
+}
+
+searchInput.addEventListener("input", updateDashboard);
+groupSelect.addEventListener("change", updateDashboard);
+gradeSelect.addEventListener("change", updateDashboard);
+
+updateDashboard();
