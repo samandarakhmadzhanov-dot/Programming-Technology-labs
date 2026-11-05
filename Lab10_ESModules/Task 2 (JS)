@@ -4,7 +4,7 @@ let contacts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
 if (contacts.length === 0) {
     contacts = [
-        { id: 1, name: "Самандар", phone: "+7 777 123 45 67" },
+        { id: 1, name: "Самандар", phone: "+7 707 412 36 18" },
         { id: 2, name: "Али", phone: "+7 701 222 33 44" },
         { id: 3, name: "Нурислам", phone: "+7 702 555 66 77" },
         { id: 4, name: "Данияр", phone: "+7 705 111 22 33" },
