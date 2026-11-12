@@ -1,1 +1,112 @@
 
+
+let students = [
+    {
+        id: 1,
+        name: "Самандар Ахмаджанов",
+        grades: [90, 85, 95]
+    },
+    {
+        id: 2,
+        name: "Иван Петров",
+        grades: [75, 80, 85]
+    },
+    {
+        id: 3,
+        name: "Алексей Смирнов",
+        grades: [88, 92, 90]
+    },
+    {
+        id: 4,
+        name: "Данияр Алиев",
+        grades: [70, 75, 80]
+    }
+];
+
+function StudentRow(props) {
+    let student = props.student;
+
+    let average = student.grades.reduce((a, b) => a + b, 0)
+        / student.grades.length;
+
+    return `
+        <tr>
+            <td>${student.id}</td>
+            <td>${student.name}</td>
+            <td>
+                ${student.grades.map((grade, index) => `
+                    <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        value="${grade}"
+                        onchange="changeGrade(${student.id}, ${index}, this.value)"
+                    >
+                `).join(" ")}
+            </td>
+            <td class="average">${average.toFixed(1)}</td>
+            <td>
+                <button onclick="showGrades(${student.id})">
+                    Оценки
+                </button>
+            </td>
+        </tr>
+    `;
+}
+
+function renderStudents() {
+    let list = document.getElementById("studentList");
+
+    list.innerHTML = students.map(student =>
+        StudentRow({ student: student })
+    ).join("");
+
+    calculateGroupAverage();
+}
+
+function changeGrade(studentId, gradeIndex, newGrade) {
+    let student = students.find(s => s.id === studentId);
+
+    let grade = Number(newGrade);
+
+    if (newGrade === "" || !Number.isInteger(grade) || grade < 0 || grade > 100) {
+        alert("Введите оценку от 0 до 100");
+        renderStudents();
+        return;
+    }
+
+    student.grades[gradeIndex] = grade;
+
+    renderStudents();
+}
+
+function calculateGroupAverage() {
+    let total = 0;
+    let count = 0;
+
+    students.forEach(student => {
+        student.grades.forEach(grade => {
+            total += grade;
+            count++;
+        });
+    });
+
+    let average = count > 0 ? total / count : 0;
+
+    document.getElementById("groupAverage").textContent =
+        average.toFixed(1);
+
+    document.getElementById("studentCount").textContent =
+        students.length;
+}
+
+function showGrades(studentId) {
+    let student = students.find(s => s.id === studentId);
+
+    alert(
+        "Студент: " + student.name +
+        "\nОценки: " + student.grades.join(", ")
+    );
+}
+
+renderStudents();
