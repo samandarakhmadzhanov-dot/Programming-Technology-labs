@@ -1,0 +1,55 @@
+const products = [
+    { id: 1, title: "Наушники", price: 15000, image: "🎧" },
+    { id: 2, title: "Смартфон", price: 120000, image: "📱" },
+    { id: 3, title: "Ноутбук", price: 250000, image: "💻" },
+    { id: 4, title: "Часы", price: 25000, image: "⌚" },
+    { id: 5, title: "Фотоаппарат", price: 85000, image: "📷" },
+    { id: 6, title: "Кроссовки", price: 30000, image: "👟" }
+];
+
+function ProductCard(props) {
+    let quantity = 1;
+
+    return `
+        <div class="product-card">
+            <div class="product-image">${props.image}</div>
+
+            <h3>${props.title}</h3>
+
+            <p class="price">${props.price.toLocaleString("ru-RU")} ₸</p>
+
+            <div class="quantity">
+                <button onclick="changeQuantity(${props.id}, -1)">−</button>
+                <span id="quantity-${props.id}">1</span>
+                <button onclick="changeQuantity(${props.id}, 1)">+</button>
+            </div>
+
+            <button class="add-btn" onclick="addToCart(${props.id})">
+                Добавить в корзину
+            </button>
+        </div>
+    `;
+}
+
+function showProducts() {
+    document.getElementById("products").innerHTML =
+        products.map(product => ProductCard(product)).join("");
+}
+
+function changeQuantity(id, change) {
+    let quantity = document.getElementById("quantity-" + id);
+
+    let value = Number(quantity.textContent) + change;
+
+    if (value >= 1) {
+        quantity.textContent = value;
+    }
+}
+
+function addToCart(id) {
+    let quantity = document.getElementById("quantity-" + id).textContent;
+
+    alert("Добавлено товаров: " + quantity);
+}
+
+showProducts();
