@@ -1,1 +1,123 @@
+const questions = [
+    {
+        question: "Что означает HTML?",
+        answers: [
+            "HyperText Markup Language",
+            "HighText Machine Language",
+            "Home Tool Markup Language",
+            "HyperText Modern Language"
+        ],
+        correct: 0
+    },
+    {
+        question: "Какой язык используется для оформления сайта?",
+        answers: [
+            "Python",
+            "CSS",
+            "SQL",
+            "Java"
+        ],
+        correct: 1
+    },
+    {
+        question: "Какой тег создаёт заголовок?",
+        answers: [
+            "p",
+            "div",
+            "h1",
+            "img"
+        ],
+        correct: 2
+    },
+    {
+        question: "Как объявить переменную в JavaScript?",
+        answers: [
+            "var",
+            "let",
+            "const",
+            "Все варианты верны"
+        ],
+        correct: 3
+    },
+    {
+        question: "Какой метод выводит сообщение в консоль?",
+        answers: [
+            "console.log()",
+            "print()",
+            "alert.log()",
+            "show()"
+        ],
+        correct: 0
+    }
+];
 
+let currentIndex = 0;
+let score = 0;
+let selectedAnswer = null;
+let userAnswers = [];
+
+function QuestionCard(props) {
+    document.getElementById("question").textContent =
+        props.question;
+
+    document.getElementById("answers").innerHTML =
+        props.answers.map((answer, index) => `
+            <button class="answer" onclick="selectAnswer(${index})">
+                ${answer}
+            </button>
+        `).join("");
+
+    document.getElementById("progress").textContent =
+        `Вопрос ${currentIndex + 1} из ${questions.length}`;
+}
+
+function showQuestion() {
+    selectedAnswer = null;
+    QuestionCard(questions[currentIndex]);
+}
+
+function selectAnswer(index) {
+    selectedAnswer = index;
+
+    document.querySelectorAll(".answer").forEach((button, i) => {
+        button.classList.toggle("selected", i === index);
+    });
+}
+
+function nextQuestion() {
+    if (selectedAnswer === null) {
+        alert("Выберите ответ!");
+        return;
+    }
+
+    userAnswers[currentIndex] = selectedAnswer;
+
+    if (selectedAnswer === questions[currentIndex].correct) {
+        score++;
+    }
+
+    currentIndex++;
+
+    if (currentIndex < questions.length) {
+        showQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById("question").textContent =
+        "Викторина завершена! 🎉";
+
+    document.getElementById("answers").innerHTML = "";
+
+    document.getElementById("progress").textContent =
+        "Ваш результат";
+
+    document.getElementById("nextBtn").style.display = "none";
+
+    document.getElementById("result").textContent =
+        `Ваш счёт: ${score} из ${questions.length}`;
+}
+
+showQuestion();
