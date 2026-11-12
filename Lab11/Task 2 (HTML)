@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мини-викторина</title>
+    <link rel="stylesheet" href="lab11.css">
+</head>
+<body>
 
+    <div class="quiz">
+        <h1> Мини-викторина</h1>
+
+        <p id="progress">Вопрос 1 из 5</p>
+
+        <div id="question"></div>
+
+        <div id="answers"></div>
+
+        <button id="nextBtn" onclick="nextQuestion()">
+            Следующий вопрос
+        </button>
+
+        <h2 id="result"></h2>
+    </div>
+
+    <script src="lab11.js"></script>
+</body>
+</html>
