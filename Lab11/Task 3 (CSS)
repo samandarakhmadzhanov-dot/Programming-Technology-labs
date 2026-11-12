@@ -1,45 +1,110 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Электронный журнал</title>
-    <link rel="stylesheet" href="lab11.css">
-</head>
-<body>
 
-    <div class="container">
-        <h1>Электронный журнал</h1>
-        <p class="subtitle">Успеваемость студентов</p>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        <div class="info">
-            <div class="info-card">
-                <span>Количество студентов</span>
-                <h2 id="studentCount">0</h2>
-            </div>
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    padding: 40px 20px;
+    color: #1e293b;
+}
 
-            <div class="info-card">
-                <span>Средний балл группы</span>
-                <h2 id="groupAverage">0</h2>
-            </div>
-        </div>
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
 
-        <div class="table-box">
-            <table>
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Студент</th>
-                        <th>Оценки</th>
-                        <th>Средний балл</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody id="studentList"></tbody>
-            </table>
-        </div>
-    </div>
+h1 {
+    text-align: center;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
 
-    <script src="lab11.js"></script>
-</body>
-</html>
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.info {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.info-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 3px 10px #00000010;
+}
+
+.info-card span {
+    color: #64748b;
+}
+
+.info-card h2 {
+    color: #2563eb;
+    margin-top: 12px;
+    font-size: 30px;
+}
+
+.table-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+input {
+    width: 45px;
+    padding: 7px;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.average {
+    font-weight: bold;
+    color: #16a34a;
+}
+
+@media (max-width: 600px) {
+    .info {
+        flex-direction: column;
+    }
+}
