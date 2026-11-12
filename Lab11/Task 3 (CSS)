@@ -1,1 +1,46 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Электронный журнал</title>
+    <link rel="stylesheet" href="lab11.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Электронный журнал</h1>
+        <p class="subtitle">Успеваемость студентов</p>
+
+        <div class="info">
+            <div class="info-card">
+                <span>Количество студентов</span>
+                <h2 id="studentCount">0</h2>
+            </div>
+
+            <div class="info-card">
+                <span>Средний балл группы</span>
+                <h2 id="groupAverage">0</h2>
+            </div>
+        </div>
+
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Студент</th>
+                        <th>Оценки</th>
+                        <th>Средний балл</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody id="studentList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="lab11.js"></script>
+</body>
+</html>
