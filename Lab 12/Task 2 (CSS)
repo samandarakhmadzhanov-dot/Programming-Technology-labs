@@ -1,1 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f5f9;
+    color: #222;
+}
+
+header {
+    background: #222b45;
+    color: white;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+button {
+    border: none;
+    background: #5268e8;
+    color: white;
+    padding: 11px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #394fc4;
+}
+
+main {
+    width: 85%;
+    max-width: 1000px;
+    margin: 35px auto;
+}
+
+.welcome {
+    background: linear-gradient(135deg, #5268e8, #7b55d9);
+    color: white;
+    padding: 45px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    margin-bottom: 12px;
+    font-size: 30px;
+}
+
+.login-box,
+.create-post,
+.forum {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+}
+
+textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.post {
+    padding: 20px;
+    border: 1px solid #e5e7ed;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.post h3 {
+    margin-bottom: 10px;
+    color: #3446a5;
+}
+
+.post p {
+    line-height: 1.6;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.post-info {
+    color: #888;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none;
+}
+
+#loginMessage {
+    margin-top: 12px;
+    color: #d33;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #888;
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 18px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    main {
+        width: 92%;
+    }
+
+    .welcome {
+        padding: 28px;
+    }
+
+    .welcome h1 {
+        font-size: 23px;
+    }
+}
