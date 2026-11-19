@@ -1,1 +1,135 @@
+const users = [
+    {
+        username: "samandar",
+        password: "12345"
+    },
+    {
+        username: "admin",
+        password: "admin123"
+    }
+];
+
+let currentUser = sessionStorage.getItem("forumUser");
+
+let posts = JSON.parse(localStorage.getItem("forumPosts")) || [
+    {
+        title: "Добро пожаловать!",
+        text: "Это первая публикация нашего мини-форума. Здесь можно делиться своими мыслями и общаться.",
+        author: "Администратор",
+        date: "19.11.2026"
+    },
+    {
+        title: "О чём будем говорить?",
+        text: "Предлагайте интересные темы для обсуждения!",
+        author: "Самандар",
+        date: "19.11.2026"
+    }
+];
+
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const loginBox = document.getElementById("loginBox");
+const createPost = document.getElementById("createPost");
+const userStatus = document.getElementById("userStatus");
+
+function updateInterface() {
+    if (currentUser) {
+        userStatus.textContent = "Пользователь: " + currentUser;
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        loginBox.classList.add("hidden");
+        createPost.classList.remove("hidden");
+    } else {
+        userStatus.textContent = "Гость";
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        createPost.classList.add("hidden");
+    }
+}
+
+function displayPosts() {
+    const postsList = document.getElementById("postsList");
+    postsList.innerHTML = "";
+
+    posts.forEach(post => {
+        const card = document.createElement("div");
+        card.className = "post";
+
+        const title = document.createElement("h3");
+        title.textContent = post.title;
+
+        const text = document.createElement("p");
+        text.textContent = post.text;
+
+        const info = document.createElement("div");
+        info.className = "post-info";
+        info.textContent = "Автор: " + post.author + " | " + post.date;
+
+        card.append(title, text, info);
+        postsList.appendChild(card);
+    });
+}
+
+loginBtn.addEventListener("click", () => {
+    loginBox.classList.toggle("hidden");
+});
+
+document.getElementById("submitLogin").addEventListener("click", () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("loginMessage");
+
+    const user = users.find(item =>
+        item.username === username && item.password === password
+    );
+
+    if (user) {
+        currentUser = user.username;
+        sessionStorage.setItem("forumUser", currentUser);
+        message.textContent = "";
+        updateInterface();
+    } else {
+        message.textContent = "Неправильный логин или пароль!";
+    }
+});
+
+logoutBtn.addEventListener("click", () => {
+    currentUser = null;
+    sessionStorage.removeItem("forumUser");
+    updateInterface();
+});
+
+document.getElementById("publishBtn").addEventListener("click", () => {
+    const title = document.getElementById("postTitle").value.trim();
+    const text = document.getElementById("postText").value.trim();
+
+    if (!title || !text) {
+        alert("Заполните все поля!");
+        return;
+    }
+
+    if (!currentUser) {
+        alert("Для публикации необходимо войти!");
+        return;
+    }
+
+    const newPost = {
+        title: title,
+        text: text,
+        author: currentUser,
+        date: new Date().toLocaleDateString("ru-RU")
+    };
+
+    posts.unshift(newPost);
+
+    localStorage.setItem("forumPosts", JSON.stringify(posts));
+
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postText").value = "";
+
+    displayPosts();
+});
+
+updateInterface();
+displayPosts();
 
