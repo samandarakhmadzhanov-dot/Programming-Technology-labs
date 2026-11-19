@@ -1,0 +1,118 @@
+
+const loginForm = document.getElementById("loginForm");
+const loginPage = document.getElementById("loginPage");
+const dashboard = document.getElementById("dashboard");
+const logoutBtn = document.getElementById("logoutBtn");
+
+const users = [
+    {
+        username: "samandar",
+        password: "12345",
+        name: "Самандар Ахмаджанов"
+    }
+];
+
+const lessons = [
+    {
+        title: "HTML и основы веб-разработки",
+        date: "20.11.2026",
+        time: "10:00",
+        teacher: "Иванов И.И."
+    },
+    {
+        title: "CSS и дизайн сайтов",
+        date: "22.11.2026",
+        time: "12:00",
+        teacher: "Петрова А.А."
+    },
+    {
+        title: "JavaScript для начинающих",
+        date: "25.11.2026",
+        time: "14:00",
+        teacher: "Сидоров Б.Б."
+    },
+    {
+        title: "Создание веб-проектов",
+        date: "28.11.2026",
+        time: "11:00",
+        teacher: "Иванов И.И."
+    }
+];
+
+function showDashboard(user) {
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    document.getElementById("userName").textContent = user.name;
+
+    displayLessons();
+}
+
+loginForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const user = users.find(item =>
+        item.username === username &&
+        item.password === password
+    );
+
+    if (user) {
+        sessionStorage.setItem("currentUser", JSON.stringify(user));
+        document.getElementById("errorMessage").textContent = "";
+        showDashboard(user);
+    } else {
+        document.getElementById("errorMessage").textContent =
+            "Неверный логин или пароль!";
+    }
+});
+
+function displayLessons() {
+    const lessonList = document.getElementById("lessonList");
+
+    lessonList.innerHTML = "";
+
+    lessons.forEach(lesson => {
+        const card = document.createElement("div");
+        card.className = "lesson-card";
+
+        card.innerHTML = `
+            <h3>${lesson.title}</h3>
+            <p>Дата: ${lesson.date}</p>
+            <p>Время: ${lesson.time}</p>
+            <p>Преподаватель: ${lesson.teacher}</p>
+            <span class="lesson-status">Доступно</span>
+        `;
+
+        lessonList.appendChild(card);
+    });
+
+    document.getElementById("totalLessons").textContent =
+        lessons.length;
+
+    document.getElementById("upcomingLessons").textContent =
+        lessons.length;
+}
+
+logoutBtn.addEventListener("click", function() {
+    sessionStorage.removeItem("currentUser");
+
+    dashboard.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+
+    loginForm.reset();
+});
+
+const savedUser = sessionStorage.getItem("currentUser");
+
+if (savedUser) {
+    const user = JSON.parse(savedUser);
+
+    if (users.some(item => item.username === user.username)) {
+        showDashboard(user);
+    } else {
+        sessionStorage.removeItem("currentUser");
+    }
+}
