@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет участника</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <h1>Course<span>Hub</span></h1>
+            <p>Вход в личный кабинет</p>
+
+            <form id="loginForm">
+                <input type="text" id="username"
+                    placeholder="Логин" required>
+
+                <input type="password" id="password"
+                    placeholder="Пароль" required>
+
+                <button type="submit">Войти</button>
+                <p id="errorMessage"></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard hidden" id="dashboard">
+
+        <header>
+            <h2>Course<span>Hub</span></h2>
+            <div class="profile">
+                <span id="userName">Участник</span>
+                <button id="logoutBtn">Выйти</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="welcome">
+                <h1>Добро пожаловать!</h1>
+                <p>Ваш личный кабинет участника курса.</p>
+            </section>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <h3>Всего занятий</h3>
+                    <p id="totalLessons">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Предстоящие</h3>
+                    <p id="upcomingLessons">0</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Статус</h3>
+                    <p class="active">Активен</p>
+                </div>
+            </section>
+
+            <section class="lessons">
+                <h2>Мои занятия</h2>
+                <p class="subtitle">
+                    Список доступных занятий вашего курса
+                </p>
+
+                <div id="lessonList" class="lesson-list"></div>
+            </section>
+        </main>
+
+        <footer>
+            © 2026 CourseHub. Личный кабинет участника.
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
