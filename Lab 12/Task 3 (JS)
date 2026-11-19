@@ -1,1 +1,220 @@
 
+const users = [
+    {
+        username: "student",
+        password: "12345",
+        name: "Самандар",
+        role: "student"
+    },
+    {
+        username: "admin",
+        password: "admin123",
+        name: "Администратор",
+        role: "admin"
+    }
+];
+
+const SESSION_DURATION = 5 * 60 * 1000;
+const SESSION_KEY = "eduPortalSession";
+
+let currentSession = null;
+let timerInterval = null;
+
+const loginPage = document.getElementById("loginPage");
+const dashboard = document.getElementById("dashboard");
+const loginInput = document.getElementById("login");
+const passwordInput = document.getElementById("password");
+const loginMessage = document.getElementById("loginMessage");
+
+function getSessionVersion(username) {
+    return Number(localStorage.getItem("sessionVersion_" + username)) || 0;
+}
+
+function saveSession(user) {
+    currentSession = {
+        username: user.username,
+        name: user.name,
+        role: user.role,
+        version: getSessionVersion(user.username),
+        lastActivity: Date.now()
+    };
+
+    localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
+}
+
+function isSessionValid() {
+    if (!currentSession) return false;
+
+    const currentVersion = getSessionVersion(currentSession.username);
+
+    if (currentSession.version !== currentVersion) return false;
+
+    if (Date.now() - currentSession.lastActivity >= SESSION_DURATION) {
+        return false;
+    }
+
+    return true;
+}
+
+function showLogin() {
+    currentSession = null;
+    localStorage.removeItem(SESSION_KEY);
+
+    clearInterval(timerInterval);
+
+    loginPage.classList.remove("hidden");
+    dashboard.classList.add("hidden");
+
+    document.getElementById("logoutBtn").classList.add("hidden");
+    document.getElementById("userInfo").textContent = "Гость";
+}
+
+function showDashboard() {
+    if (!isSessionValid()) {
+        showLogin();
+        return;
+    }
+
+    loginPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    document.getElementById("logoutBtn").classList.remove("hidden");
+    document.getElementById("userInfo").textContent = currentSession.name;
+
+    document.getElementById("welcomeTitle").textContent =
+        "Здравствуйте, " + currentSession.name + "!";
+
+    document.getElementById("userRole").textContent =
+        currentSession.role === "admin" ? "Администратор" : "Студент";
+
+    const studentSection = document.getElementById("studentSection");
+    const adminSection = document.getElementById("adminSection");
+
+    studentSection.classList.add("hidden");
+    adminSection.classList.add("hidden");
+
+    if (currentSession.role === "student") {
+        studentSection.classList.remove("hidden");
+    }
+
+    if (currentSession.role === "admin") {
+        adminSection.classList.remove("hidden");
+    }
+
+    startSessionTimer();
+}
+
+document.getElementById("loginBtn").addEventListener("click", () => {
+    const username = loginInput.value.trim();
+    const password = passwordInput.value;
+
+    const user = users.find(item =>
+        item.username === username && item.password === password
+    );
+
+    if (!user) {
+        loginMessage.textContent = "Неверный логин или пароль!";
+        return;
+    }
+
+    loginMessage.textContent = "";
+
+    saveSession(user);
+    showDashboard();
+
+    loginInput.value = "";
+    passwordInput.value = "";
+});
+
+function updateActivity() {
+    if (!currentSession || !isSessionValid()) return;
+
+    currentSession.lastActivity = Date.now();
+
+    localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
+}
+
+function startSessionTimer() {
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        if (!isSessionValid()) {
+            alert("Время сессии истекло. Войдите снова.");
+            showLogin();
+            return;
+        }
+
+        const remaining =
+            SESSION_DURATION - (Date.now() - currentSession.lastActivity);
+
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+
+        document.getElementById("sessionTimer").textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
+        document.getElementById("sessionStatus").textContent = "Активна";
+    }, 1000);
+}
+
+["click", "keydown", "mousemove", "scroll", "touchstart"].forEach(eventName => {
+    document.addEventListener(eventName, updateActivity);
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    showLogin();
+});
+
+document.getElementById("logoutAllBtn").addEventListener("click", () => {
+    if (!currentSession) return;
+
+    const confirmed = confirm(
+        "Вы действительно хотите завершить все сессии аккаунта?"
+    );
+
+    if (!confirmed) return;
+
+    const username = currentSession.username;
+    const newVersion = getSessionVersion(username) + 1;
+
+    localStorage.setItem("sessionVersion_" + username, newVersion);
+
+    showLogin();
+
+    alert("Все сессии этого аккаунта завершены в рамках этого браузера.");
+});
+
+window.addEventListener("storage", event => {
+    if (
+        event.key === SESSION_KEY ||
+        (currentSession && event.key === "sessionVersion_" + currentSession.username)
+    ) {
+        if (!isSessionValid()) {
+            showLogin();
+        }
+    }
+});
+
+function checkSavedSession() {
+    const savedSession = localStorage.getItem(SESSION_KEY);
+
+    if (!savedSession) {
+        showLogin();
+        return;
+    }
+
+    try {
+        currentSession = JSON.parse(savedSession);
+
+        if (isSessionValid()) {
+            showDashboard();
+        } else {
+            showLogin();
+        }
+    } catch {
+        showLogin();
+    }
+}
+
+checkSavedSession();
