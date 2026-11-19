@@ -1,1 +1,106 @@
 
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPortal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">EduPortal</div>
+    <div class="header-right">
+        <span id="userInfo">Гость</span>
+        <button id="logoutBtn" class="hidden">Выйти</button>
+    </div>
+</header>
+
+<main>
+    <section id="loginPage" class="login-page">
+        <div class="login-card">
+            <h1>Вход в портал</h1>
+            <p>Введите данные своей учётной записи</p>
+
+            <input type="text" id="login" placeholder="Логин">
+            <input type="password" id="password" placeholder="Пароль">
+
+            <button id="loginBtn">Войти</button>
+            <p id="loginMessage"></p>
+
+            <div class="demo-accounts">
+                <p>Тестовые аккаунты:</p>
+                <span>Студент: student / 12345</span>
+                <span>Администратор: admin / admin123</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+        <div class="welcome">
+            <h1 id="welcomeTitle">Личный кабинет</h1>
+            <p>Добро пожаловать в учебный портал!</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Ваш статус</h3>
+                <p id="userRole">Студент</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Состояние сессии</h3>
+                <p id="sessionStatus">Активна</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>До выхода</h3>
+                <p id="sessionTimer">05:00</p>
+            </div>
+        </div>
+
+        <section id="studentSection" class="content-card hidden">
+            <h2>Раздел студента</h2>
+            <p>Здесь находятся учебные материалы и задания.</p>
+            <div class="lesson">
+                <h3>HTML и CSS</h3>
+                <p>Изучение структуры и оформления веб-страниц.</p>
+            </div>
+            <div class="lesson">
+                <h3>JavaScript</h3>
+                <p>Основы программирования и интерактивности.</p>
+            </div>
+        </section>
+
+        <section id="adminSection" class="content-card hidden">
+            <h2>Панель администратора</h2>
+            <p>Администратор имеет доступ к управлению учебным порталом.</p>
+            <div class="lesson">
+                <h3>Управление пользователями</h3>
+                <p>Просмотр и управление учётными записями.</p>
+            </div>
+            <div class="lesson">
+                <h3>Управление курсами</h3>
+                <p>Добавление и изменение учебных материалов.</p>
+            </div>
+        </section>
+
+        <section class="content-card security">
+            <h2>Безопасность аккаунта</h2>
+            <p>Вы можете завершить текущую сессию или выполнить выход из всех сессий.</p>
+            <button id="logoutAllBtn" class="danger-btn">
+                Выйти со всех устройств
+            </button>
+        </section>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 EduPortal | Учебный проект</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
+
