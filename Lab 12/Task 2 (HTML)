@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniForum</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<header>
+    <div class="logo">MiniForum</div>
+    <nav>
+        <span id="userStatus">Гость</span>
+        <button id="loginBtn">Войти</button>
+        <button id="logoutBtn" class="hidden">Выйти</button>
+    </nav>
+</header>
+
+<main>
+    <section class="welcome">
+        <h1>Добро пожаловать на MiniForum!</h1>
+        <p>Общайся, делись идеями и обсуждай интересные темы.</p>
+    </section>
+
+    <section class="login-box hidden" id="loginBox">
+        <h2>Вход в аккаунт</h2>
+        <input type="text" id="username" placeholder="Введите имя">
+        <input type="password" id="password" placeholder="Введите пароль">
+        <button id="submitLogin">Войти</button>
+        <p id="loginMessage"></p>
+    </section>
+
+    <section class="create-post hidden" id="createPost">
+        <h2>Создать публикацию</h2>
+        <input type="text" id="postTitle" placeholder="Заголовок публикации">
+        <textarea id="postText" placeholder="Напишите сообщение..."></textarea>
+        <button id="publishBtn">Опубликовать</button>
+    </section>
+
+    <section class="forum">
+        <h2>Последние публикации</h2>
+        <div id="postsList"></div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 MiniForum. Все права защищены.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
