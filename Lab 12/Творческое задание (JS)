@@ -1,0 +1,75 @@
+const correctLogin = "F1ador";
+const correctPassword = "12345";
+
+let timeLeft = 300;
+let timerInterval;
+
+function login() {
+    const loginValue = document.getElementById("username").value;
+    const passwordValue = document.getElementById("password").value;
+
+    if (loginValue === correctLogin && passwordValue === correctPassword) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+
+        document.getElementById("userName").textContent = loginValue;
+
+        timeLeft = 300;
+        startTimer();
+    } else {
+        document.getElementById("message").textContent =
+            "Неверный логин или пароль!";
+    }
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(function() {
+        timeLeft--;
+
+        updateTimer();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("Время сессии истекло! Выполнен автоматический выход.");
+            logout();
+        }
+    }, 1000);
+}
+
+function updateTimer() {
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+
+    document.getElementById("timer").textContent =
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+
+    if (timeLeft <= 60) {
+        document.getElementById("timer").style.color = "red";
+    } else {
+        document.getElementById("timer").style.color = "#208b55";
+    }
+}
+
+function extendSession() {
+    timeLeft = 300;
+    updateTimer();
+    startTimer();
+
+    alert("Сессия продлена на 5 минут!");
+}
+
+function logout() {
+    clearInterval(timerInterval);
+
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("message").textContent = "";
+
+    timeLeft = 300;
+}
