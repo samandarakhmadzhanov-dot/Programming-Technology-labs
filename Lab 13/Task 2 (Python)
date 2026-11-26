@@ -1,0 +1,100 @@
+books = {
+    "B001": {"title": "Python для начинающих", "available": True},
+    "B002": {"title": "Основы программирования", "available": True},
+    "B003": {"title": "Изучаем Java", "available": False},
+    "B004": {"title": "Базы данных", "available": True},
+    "B005": {"title": "Алгоритмы и структуры данных", "available": False}
+}
+
+
+def show_books():
+    if not books:
+        print("Библиотека пуста.")
+        return
+
+    print("\nСписок всех книг:")
+    for book_id, book in books.items():
+        status = "Доступна" if book["available"] else "Выдана"
+        print(book_id, "-", book["title"], "-", status)
+
+
+def show_available():
+    found = False
+    print("\nДоступные книги:")
+
+    for book_id, book in books.items():
+        if book["available"]:
+            print(book_id, "-", book["title"])
+            found = True
+
+    if not found:
+        print("Нет доступных книг.")
+
+
+def add_book():
+    book_id = input("Введите ID книги: ")
+
+    if book_id in books:
+        print("Книга с таким ID уже существует.")
+        return
+
+    title = input("Введите название книги: ")
+
+    books[book_id] = {
+        "title": title,
+        "available": True
+    }
+
+    print("Книга успешно добавлена.")
+
+
+def give_book():
+    book_id = input("Введите ID книги: ")
+
+    if book_id not in books:
+        print("Книга не найдена.")
+    elif not books[book_id]["available"]:
+        print("Книга уже выдана.")
+    else:
+        books[book_id]["available"] = False
+        print("Книга успешно выдана.")
+
+
+def return_book():
+    book_id = input("Введите ID книги: ")
+
+    if book_id not in books:
+        print("Книга не найдена.")
+    elif books[book_id]["available"]:
+        print("Эта книга уже находится в библиотеке.")
+    else:
+        books[book_id]["available"] = True
+        print("Книга успешно возвращена.")
+
+
+while True:
+    print("\n===== МИНИ-БИБЛИОТЕКА =====")
+    print("1. Показать все книги")
+    print("2. Показать доступные книги")
+    print("3. Добавить книгу")
+    print("4. Выдать книгу")
+    print("5. Вернуть книгу")
+    print("6. Выход")
+
+    choice = input("Выберите действие: ")
+
+    if choice == "1":
+        show_books()
+    elif choice == "2":
+        show_available()
+    elif choice == "3":
+        add_book()
+    elif choice == "4":
+        give_book()
+    elif choice == "5":
+        return_book()
+    elif choice == "6":
+        print("Программа завершена.")
+        break
+    else:
+        print("Неверный выбор. Попробуйте снова.")
