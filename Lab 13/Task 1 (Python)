@@ -1,0 +1,72 @@
+attendance = {
+    "Алия": "Присутствует",
+    "Дамир": "Отсутствует",
+    "Самандар": "Присутствует",
+    "Максат": "Присутствует",
+    "Арман": "Отсутствует"
+}
+
+def show_students():
+    if not attendance:
+        print("Список студентов пуст.")
+    else:
+        print("\nСписок посещаемости:")
+        for name, status in attendance.items():
+            print(name, "-", status)
+
+def change_status():
+    name = input("Введите имя студента: ")
+
+    if name in attendance:
+        status = input("Введите статус (Присутствует/Отсутствует): ")
+
+        if status in ["Присутствует", "Отсутствует"]:
+            attendance[name] = status
+            print("Статус успешно изменен.")
+        else:
+            print("Неверный статус.")
+    else:
+        print("Студент не найден.")
+
+def count_present():
+    count = 0
+
+    for status in attendance.values():
+        if status == "Присутствует":
+            count += 1
+
+    print("Количество присутствующих:", count)
+    print("Количество отсутствующих:", len(attendance) - count)
+
+def add_student():
+    name = input("Введите имя нового студента: ")
+
+    if name in attendance:
+        print("Такой студент уже существует.")
+    else:
+        attendance[name] = "Отсутствует"
+        print("Студент добавлен.")
+
+while True:
+    print("\n===== УЧЕТ ПОСЕЩАЕМОСТИ =====")
+    print("1. Показать список студентов")
+    print("2. Изменить статус студента")
+    print("3. Подсчитать присутствующих")
+    print("4. Добавить студента")
+    print("5. Выход")
+
+    choice = input("Выберите действие: ")
+
+    if choice == "1":
+        show_students()
+    elif choice == "2":
+        change_status()
+    elif choice == "3":
+        count_present()
+    elif choice == "4":
+        add_student()
+    elif choice == "5":
+        print("Программа завершена.")
+        break
+    else:
+        print("Неверный выбор. Попробуйте снова.")
