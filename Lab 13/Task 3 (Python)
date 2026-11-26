@@ -1,0 +1,94 @@
+from collections import deque
+
+seats = {
+    "1": None,
+    "2": None,
+    "3": None,
+    "4": None,
+    "5": None
+}
+
+waiting_queue = deque()
+
+
+def show_seats():
+    print("\n===== СПИСОК МЕСТ =====")
+
+    for seat, person in seats.items():
+        if person is None:
+            print("Место", seat, "- Свободно")
+        else:
+            print("Место", seat, "-", person)
+
+
+def book_seat():
+    name = input("Введите имя: ")
+    seat = input("Введите номер места: ")
+
+    if seat not in seats:
+        print("Такого места не существует.")
+    elif name in seats.values() or name in waiting_queue:
+        print("Вы уже забронировали место или находитесь в очереди.")
+    elif seats[seat] is None:
+        seats[seat] = name
+        print("Место успешно забронировано.")
+    else:
+        waiting_queue.append((name, seat))
+        print("Место занято. Вы добавлены в очередь ожидания.")
+
+
+def cancel_booking():
+    seat = input("Введите номер места: ")
+
+    if seat not in seats:
+        print("Такого места не существует.")
+        return
+
+    if seats[seat] is None:
+        print("Это место уже свободно.")
+        return
+
+    print("Бронь отменена:", seats[seat])
+    seats[seat] = None
+
+    if waiting_queue:
+        name, wanted_seat = waiting_queue[0]
+
+        if wanted_seat == seat:
+            waiting_queue.popleft()
+            seats[seat] = name
+            print("Место автоматически передано:", name)
+
+
+def show_queue():
+    if not waiting_queue:
+        print("\nОчередь ожидания пуста.")
+    else:
+        print("\nОчередь ожидания:")
+        for i, (name, seat) in enumerate(waiting_queue, 1):
+            print(i, "-", name, "| Место:", seat)
+
+
+while True:
+    print("\n===== СИСТЕМА БРОНИРОВАНИЯ =====")
+    print("1. Показать места")
+    print("2. Забронировать место")
+    print("3. Отменить бронь")
+    print("4. Показать очередь ожидания")
+    print("5. Выход")
+
+    choice = input("Выберите действие: ")
+
+    if choice == "1":
+        show_seats()
+    elif choice == "2":
+        book_seat()
+    elif choice == "3":
+        cancel_booking()
+    elif choice == "4":
+        show_queue()
+    elif choice == "5":
+        print("Программа завершена.")
+        break
+    else:
+        print("Неверный выбор.")
